@@ -1,0 +1,25 @@
+{
+  "name": "vsc-mock-backend",
+  "version": "1.0.0",
+  "description": "A simple mock backend that simulates the HAW-OPPSEE API.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js"
+  },
+  "author": "Philip Aguilar Bremer",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express-validator": "^3.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.37",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.2.3"
+  }
+}
