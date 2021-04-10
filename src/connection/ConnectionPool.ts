@@ -9,7 +9,7 @@ This improves the latency of queries as you avoid all of the overhead that comes
 https://www.npmjs.com/package/mysql2#using-connection-pools */
 
 // Create and export the connection pool.
-export const pool: Pool = mysql.createPool({
+export const ConnectionPool: Pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PWD,

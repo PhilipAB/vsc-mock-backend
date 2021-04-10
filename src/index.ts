@@ -1,12 +1,12 @@
 import express from 'express';
 import { Pool } from 'mysql2/promise';
-import { pool } from './connection/pool';
+import { ConnectionPool } from './connection/ConnectionPool';
 
 // Anonymous function calling itself
 // (async () => {
 const app = express();
 const port: string | number = process.env.PORT || 3000;
-const promisePool: Pool = pool.promise();
+const promisePool: Pool = ConnectionPool.promise();
 app.use(express.json());
 
 app.post('/createUser', async (req, res) => {
