@@ -171,7 +171,33 @@ You can delete it again by running the following query: `DELETE FROM user WHERE 
 
 Now we are finished with the basic setup for our mock backend. Stay tuned for future commits to improve our file structure, extend the domain model as well as the API and more. 
 
+## Commit Log
 
+A set of all commits with a brief description in this project.
+
+### Commit 1 – C1
+
+Initial commit. Basic setup of a mock backend with express and mysql, written in typescript.  
+
+### Commit 2 – C2
+
+Changed naming from "pool" to "ConnectionPool".
+
+### Commit 3 – C3
+
+Updated README.md: Extended README.md by three sections (**commit log**, **known issues** and **release notes**).
+
+## Known Issues
+
+A set of all known issues in this project.
+
+## Release Notes
+
+No official release yet.
+
+### 1.0.0
+
+No official release yet ...
 
 
 
