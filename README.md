@@ -191,6 +191,11 @@ Updated README.md: Extended README.md by three sections (**commit log**, **known
 
 Updated README.md: Capitalized letters in **README**.md.
 
+### Commit 5 – C5
+
+Added models and type(s). A model represents a table in our database.\
+A type does not. (In this case) it helps to specify a column more precisely. 
+
 ## Known Issues
 
 A set of all known issues in this project.

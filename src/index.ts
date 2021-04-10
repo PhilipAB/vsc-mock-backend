@@ -1,6 +1,7 @@
 import express from 'express';
 import { Pool } from 'mysql2/promise';
 import { ConnectionPool } from './connection/ConnectionPool';
+import { BasicUser } from './models/BasicUser';
 
 // Anonymous function calling itself
 // (async () => {
@@ -10,12 +11,11 @@ const promisePool: Pool = ConnectionPool.promise();
 app.use(express.json());
 
 app.post('/createUser', async (req, res) => {
-    const userName: string = req.body.name;
-    const role: string = req.body.role;
+    const user: BasicUser = req.body;
 
     try {
-        await promisePool.query("INSERT INTO `User` (`name`, `role`) VALUES(?, ?)", [userName, role]);
-        res.send("User " + userName + " created.");
+        await promisePool.query("INSERT INTO `User` (`name`, `role`) VALUES(?, ?)", [user.name, user.role]);
+        res.status(201).send("User " + user.name + " created.");
     } catch (error) {
         res.send(error);
     }
