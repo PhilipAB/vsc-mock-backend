@@ -99,7 +99,7 @@ The first one will be our user table:
 ```
 CREATE TABLE User (
     id INT AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
     role ENUM('Lecturer', 'Student') NOT NULL,
     PRIMARY KEY (id) 
 );
@@ -109,7 +109,7 @@ After that we will add out course table to our database:
 ```
 CREATE TABLE Course (
     id INT AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     creator_id INT NOT NULL, 
     PRIMARY KEY (id),
@@ -194,7 +194,11 @@ Updated README.md: Capitalized letters in **README**.md.
 ### Commit 5 – C5
 
 Added models and type(s). A model represents a table in our database.\
-A type does not. (In this case) it helps to specify a column more precisely. 
+A type does not. (In this case) it helps to specify a column more precisely.
+
+### Commit 6 – C6
+
+Updated sql queries in README.md for table definitions. The **name** column in user and course table is now unique, so we will not have courses/users with the exact same name in our database.
 
 ## Known Issues
 
