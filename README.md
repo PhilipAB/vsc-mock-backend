@@ -187,6 +187,10 @@ Changed naming from "pool" to "ConnectionPool".
 
 Updated README.md: Extended README.md by three sections (**commit log**, **known issues** and **release notes**).
 
+### Commit 4 – C4
+
+Updated README.md: Capitalized letters in **README**.md.
+
 ## Known Issues
 
 A set of all known issues in this project.
