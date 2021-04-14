@@ -8,6 +8,7 @@ import { CourseUserRelationRole } from "../models/CourseUserRelationRole";
 import { CourseRoleType } from "../types/CourseRoleType";
 import { isResultSetHeader } from "../predicates/isResultSetHeader";
 import { isCourseArray } from "../predicates/isCourseArray";
+import * as bcrypt from 'bcrypt';
 
 export const courseRouter: Router = express.Router();
 const courseController: CourseController = new CourseController();
@@ -36,19 +37,20 @@ courseRouter.post('/',
         else {
             const course: BasicCoursePwd = req.body;
             try {
+                course.password = await bcrypt.hash(course.password, 10);
+            } catch (error) {
+                res.status(500).json({ errors: "Password could not be encrypted correctly!" }).send();
+            }
+            try {
                 const [result, _fields] = await courseController.createCourse(course);
                 if (isResultSetHeader(result)) {
-                    try {
-                        const courseUserRelation: CourseUserRelationRole = {
-                            userId: course.creatorId,
-                            courseId: result.insertId,
-                            role: CourseRoleType.CourseAdmin
-                        }
-                        await courseUserRelationController.createCourseUserRelation(courseUserRelation);
-                        res.status(201).json({ courseId: result.insertId, courseName: course.name }).send();
-                    } catch (error) {
-                        res.status(500).json({ errors: error }).send();
+                    const courseUserRelation: CourseUserRelationRole = {
+                        userId: course.creatorId,
+                        courseId: result.insertId,
+                        role: CourseRoleType.CourseAdmin
                     }
+                    await courseUserRelationController.createCourseUserRelation(courseUserRelation);
+                    res.status(201).json({ courseId: result.insertId, courseName: course.name }).send();
                 }
                 else {
                     res.status(500).json({ errors: "Course user relation data could not be processed!" }).send();

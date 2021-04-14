@@ -244,6 +244,10 @@ app.get("/", (_req, res) => {
 });
 ```
 
+### Commit 15 – C15
+
+Removed unnecessary nested try catch block in CourseController.ts. Transferred encryption logic from CourseController.ts to courseRouter.ts. Parameters in CourseUserRelationController.ts better adapted to the domain model. 
+
 ## Known Issues
 
 A set of all known issues in this project.

@@ -1,7 +1,8 @@
 import { Pool } from "mysql2/promise";
 import { connectionPool } from "../connection/connectionPool";
-import { BasicCourseUserRelation } from "../models/BasicCourseUserRelation";
 import { CourseUserRelationRole } from "src/models/CourseUserRelationRole";
+import { CourseUserRelationHidden } from "src/models/CourseUserRelationHidden";
+import { CourseUserRelationStarred } from "src/models/CourseUserRelationStarred";
 
 export class CourseUserRelationController {
 
@@ -27,10 +28,10 @@ export class CourseUserRelationController {
             WHERE cur.c_id = ?", [courseId]);
     }
 
-    updateStarProperty(courseUserRelation: BasicCourseUserRelation, isStarred: boolean) {
+    updateStarProperty(courseUserRelation: CourseUserRelationStarred) {
         type boolDisplayedWithNumber = 0 | 1;
         let starred: boolDisplayedWithNumber;
-        isStarred ? starred = 1 : starred = 0;
+        courseUserRelation.starred ? starred = 1 : starred = 0;
         return this.promisePool.query(
             "UPDATE `Course`\
             SET `is_starred` = ?\
@@ -38,10 +39,10 @@ export class CourseUserRelationController {
 
     }
 
-    updateHiddenProperty(courseUserRelation: BasicCourseUserRelation, isHidden: boolean) {
+    updateHiddenProperty(courseUserRelation: CourseUserRelationHidden) {
         type boolDisplayedWithNumber = 0 | 1;
         let hidden: boolDisplayedWithNumber;
-        isHidden ? hidden = 1 : hidden = 0;
+        courseUserRelation.hidden ? hidden = 1 : hidden = 0;
         return this.promisePool.query(
             "UPDATE `Course`\
             SET `is_hidden` = ?\
