@@ -100,7 +100,7 @@ The first one will be our user table:
 CREATE TABLE User (
     id INT AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE,
-    role ENUM('Lecturer', 'Student') NOT NULL,
+    role ENUM('Lecturer', 'Student') NOT NULL DEFAULT 'Student',
     PRIMARY KEY (id) 
 );
 ```
@@ -122,6 +122,9 @@ And finally we will insert the course user relation table to resolve the many-to
 CREATE TABLE CourseUserRelation (
     u_id INT,
     c_id INT,
+    hidden BOOLEAN NOT NULL DEFAULT 0,
+    starred BOOLEAN NOT NULL DEFAULT 0,
+    role ENUM('CourseAdmin', 'Teacher', 'Student') NOT NULL DEFAULT 'Student',
     PRIMARY KEY (u_id, c_id),
     FOREIGN KEY (u_id) REFERENCES User(id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
@@ -145,7 +148,7 @@ Let us implement a short POST request to test our connection to the database. To
 const promisePool: Pool = pool.promise();
 app.use(express.json());
 
-app.post('/createUser', async (req, res) => {
+app.post('/users', async (req, res) => {
     const userName: string = req.body.name;
     const role: string = req.body.role;
 
@@ -199,6 +202,10 @@ A type does not. (In this case) it helps to specify a column more precisely.
 ### Commit 6 – C6
 
 Updated sql queries in README.md for table definitions. The **name** column in user and course table is now unique, so we will not have courses/users with the exact same name in our database.
+
+### Commit 7 – C7
+
+Updated models and types. Renamed route from */createUser* to */users*. Added columns hidden, starred and role to CourseUserRelation table. Added default values for roles. Changed naming convention for exported constants from PascalCase to camelCase.  
 
 ## Known Issues
 

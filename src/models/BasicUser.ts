@@ -1,7 +1,8 @@
-/* In case we do not need to process the id of a user. */ 
-import { RoleType } from "src/types/RoleType";
+/* In case we do not need to process the id of a user. */
+import { RowDataPacket } from "mysql2/typings/mysql";
+import { UserRoleType } from "src/types/UserRoleType";
 
-export interface BasicUser {
+export interface BasicUser extends RowDataPacket {
     name: string,
-    role: RoleType
+    role: UserRoleType
 }
