@@ -220,6 +220,14 @@ Added missing dependency *bcrypt*.
 
 Added (custom middleware) validation and sanitization to help preventing injection of harmful code. 
 
+### Commit 11 – C11
+
+Renamed ConnectionPool.ts to connectionPool.ts. 
+
+### Commit 12 – C12
+
+Added routers encapsulating the logic to handle HTTP requests/responses. 
+
 ## Known Issues
 
 A set of all known issues in this project.
