@@ -207,6 +207,10 @@ Updated sql queries in README.md for table definitions. The **name** column in u
 
 Updated models and types. Renamed route from */createUser* to */users*. Added columns hidden, starred and role to CourseUserRelation table. Added default values for roles. Changed naming convention for exported constants from PascalCase to camelCase.  
 
+### Commit 8 – C8
+
+Added controllers encapsulating the logic to perform CRUD (create, read, update and delete) operations on our database. Added type predicates to ensure that we can operate safely on our controllers' expected return types. Added new get route */users* and post/get route */courses*.   
+
 ## Known Issues
 
 A set of all known issues in this project.
