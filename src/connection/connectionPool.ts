@@ -1,4 +1,4 @@
-import mysql, {Pool} from 'mysql2';
+import mysql, { Pool } from 'mysql2';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './process.env' });
 

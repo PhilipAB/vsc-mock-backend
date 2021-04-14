@@ -228,6 +228,22 @@ Renamed ConnectionPool.ts to connectionPool.ts.
 
 Added routers encapsulating the logic to handle HTTP requests/responses. 
 
+### Commit 13 – C13
+
+Merge because of code formatting.
+
+### Commit 14 – C14
+
+**Removed** the following test route from index.ts: 
+
+```
+app.get("/", (_req, res) => {
+    res.send({
+        "test": 150
+    })
+});
+```
+
 ## Known Issues
 
 A set of all known issues in this project.
