@@ -6,7 +6,7 @@ export class CourseController {
 
     promisePool: Pool = connectionPool.promise();
 
-    async createCourse(course: BasicCourse) {
+    createCourse(course: BasicCourse) {
         return this.promisePool.query(
             "INSERT INTO `Course` (`name`, `password`, `creator_id`) VALUES(?, ?, ?)", [course.name, course.password, course.creatorId]
         );
