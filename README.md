@@ -36,6 +36,7 @@ to provide the server-side logic for our project\
 `npm i mysql2` database driver for MySQL (if you choose another database, please change your driver accordingly)
 `npm i dotenv` to load the environment variables from our process.env file
 `npm i @types/dotenv` dotenv for typescript
+`npm i bcrypt @types/bcrypt` to hash our stored course password
 
 Now create a tsconfig.json file in your root folder by either copying this [tsconfig.json](tsconfig.json) or setting up your own with the following command:\
 `npx tsc --init`
@@ -210,6 +211,10 @@ Updated models and types. Renamed route from */createUser* to */users*. Added co
 ### Commit 8 – C8
 
 Added controllers encapsulating the logic to perform CRUD (create, read, update and delete) operations on our database. Added type predicates to ensure that we can operate safely on our controllers' expected return types. Added new get route */users* and post/get route */courses*.   
+
+### Commit 9 – C9
+
+Added missing dependency *bcrypt*.
 
 ## Known Issues
 
