@@ -216,6 +216,10 @@ Added controllers encapsulating the logic to perform CRUD (create, read, update 
 
 Added missing dependency *bcrypt*.
 
+### Commit 10 – C10
+
+Added (custom middleware) validation and sanitization to help preventing injection of harmful code. 
+
 ## Known Issues
 
 A set of all known issues in this project.

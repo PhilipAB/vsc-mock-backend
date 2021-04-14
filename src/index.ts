@@ -4,6 +4,8 @@ import { UserController } from './controllers/UserController';
 import { BasicUser } from './models/BasicUser';
 import { CourseUserRelationController } from './controllers/CourseUserRelationController';
 import { isUserArray } from './predicates/isUserArray';
+import { body, validationResult } from 'express-validator';
+import { UserMiddleware } from './middleware/UserMiddleware';
 import { isResultSetHeader } from './predicates/isResultSetHeader';
 import { CourseUserRelationRole } from './models/CourseUserRelationRole';
 import { CourseRoleType } from './types/CourseRoleType';
@@ -15,19 +17,29 @@ const port: string | number = process.env.PORT || 3000;
 const userController: UserController = new UserController();
 const courseController: CourseController = new CourseController();
 const courseUserRelationController: CourseUserRelationController = new CourseUserRelationController();
+const userMiddleware: UserMiddleware = new UserMiddleware();
 app.use(express.json());
 
 
 app.post('/users',
+    body('name').notEmpty().isString()
+        .escape().trim(),
+    body('role').isIn(['Student', 'Lecturer']),
     async (req, res) => {
-        const user: BasicUser = req.body;
-        try {
-            const [result, _fields] = await userController.createUser(user);
-            if (isResultSetHeader(result)) {
-                res.status(201).json({ courseId: result.insertId, courseName: user.name }).send();
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() }).send();
+        }
+        else {
+            const user: BasicUser = req.body;
+            try {
+                const [result, _fields] = await userController.createUser(user);
+                if (isResultSetHeader(result)) {
+                    res.status(201).json({ courseId: result.insertId, courseName: user.name }).send();
+                }
+            } catch (error) {
+                res.status(500).json({ errors: error }).send();
             }
-        } catch (error) {
-            res.status(500).json({ errors: error }).send();
         }
     });
 
@@ -49,28 +61,45 @@ app.get('/users', async (_req, res) => {
 });
 
 app.post('/courses',
+    body('name').notEmpty().isString()
+        .escape().trim(),
+    body('password').isString().
+        isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+        .matches('[0-9]').withMessage('Password must contain a number')
+        .matches('[A-Z]').withMessage('Password must contain an uppercase letter')
+        .escape().trim(),
+    body('creatorId').notEmpty().isNumeric()
+        .escape().trim(),
+    userMiddleware.valideCourseCreationUserRights,
     async (req: express.Request, res: express.Response) => {
-        const course: BasicCoursePwd = req.body;
-        try {
-            const [result, _fields] = await courseController.createCourse(course);
-            if (isResultSetHeader(result)) {
-                try {
-                    const courseUserRelation: CourseUserRelationRole = {
-                        userId: course.creatorId,
-                        courseId: result.insertId,
-                        role: CourseRoleType.CourseAdmin
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json(
+                { errors: errors.array() }).send();
+        }
+        else {
+            const course: BasicCoursePwd = req.body;
+            try {
+                const [result, _fields] = await courseController.createCourse(course);
+                if (isResultSetHeader(result)) {
+                    try {
+                        const courseUserRelation: CourseUserRelationRole = {
+                            userId: course.creatorId,
+                            courseId: result.insertId,
+                            role: CourseRoleType.CourseAdmin
+                        }
+                        await courseUserRelationController.createCourseUserRelation(courseUserRelation);
+                        res.status(201).json({ courseId: result.insertId, courseName: course.name }).send();
+                    } catch (error) {
+                        res.status(500).json({ errors: error }).send();
                     }
-                    await courseUserRelationController.createCourseUserRelation(courseUserRelation);
-                    res.status(201).json({ courseId: result.insertId, courseName: course.name }).send();
-                } catch (error) {
-                    res.status(500).json({ errors: error }).send();
                 }
+                else {
+                    res.status(500).json({ errors: "Course user relation data could not be processed!" }).send();
+                }
+            } catch (error) {
+                res.status(500).json({ errors: error }).send();
             }
-            else {
-                res.status(500).json({ errors: "Course user relation data could not be processed!" }).send();
-            }
-        } catch (error) {
-            res.status(500).json({ errors: error }).send();
         }
     });
 
