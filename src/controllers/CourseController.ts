@@ -1,23 +1,58 @@
-import { Pool } from 'mysql2/promise';
-import { BasicCourse } from 'src/models/BasicCourse';
-import { connectionPool } from '../connection/connectionPool';
+import { Request, Response } from 'express';
+import * as bcrypt from 'bcrypt';
+import { isResultSetHeader } from '../predicates/isResultSetHeader';
+import { isCourseArray } from '../predicates/isCourseArray';
+import courseService from '../services/CourseService';
+import courseUserRelationService from '../services/CourseUserRelationService';
+import { BasicCoursePwd } from '../models/BasicCoursePwd';
+import { CourseUserRelationRole } from '../models/CourseUserRelationRole';
+import { CourseRoleType } from '../types/CourseRoleType';
 
-export class CourseController {
 
-    promisePool: Pool = connectionPool.promise();
+class CourseController {
 
-    createCourse(course: BasicCourse) {
-        return this.promisePool.query(
-            "INSERT INTO `Course` (`name`, `password`, `creator_id`) VALUES(?, ?, ?)", [course.name, course.password, course.creatorId]
-        );
+    async createCourse(req: Request, res: Response) {
+        const course: BasicCoursePwd = req.body;
+        try {
+            course.password = await bcrypt.hash(course.password, 10);
+        } catch (error) {
+            res.status(500).json({ error: "Password could not be encrypted correctly!" }).send();
+        }
+        try {
+            const [result, _fields] = await courseService.create(course);
+            if (isResultSetHeader(result)) {
+                const courseUserRelation: CourseUserRelationRole = {
+                    userId: course.creatorId,
+                    courseId: result.insertId,
+                    role: CourseRoleType.CourseAdmin
+                }
+                await courseUserRelationService.create(courseUserRelation);
+                res.status(201).json({ courseId: result.insertId, courseName: course.name }).send();
+            }
+            else {
+                res.status(500).json({ error: "Course user relation data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
     }
 
-    getAllCourses() {
-        return this.promisePool.query("SELECT `id`, `name`, `creator_id` FROM `Course`");
+    async getAllCourses(_req: Request, res: Response) {
+        try {
+            const [courseRows, _courseFields] = await courseService.getAll();
+            // If rows array is empty, return the empty array.
+            // If rows array items have same structure as course model, return as course model and send course array as response.  
+            // Advantage: Complexity O(1)
+            if (Array.isArray(courseRows) && courseRows.length === 0 || isCourseArray(courseRows)) {
+                res.status(200).send(courseRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
     }
-
-    getAllCreatedCourses(creatorId: number) {
-        return this.promisePool.query("SELECT `id`, `name`, `creator_id` FROM `Course` WHERE `creator_id` = ?", [creatorId]);
-    }
-
 }
+
+export default new CourseController();

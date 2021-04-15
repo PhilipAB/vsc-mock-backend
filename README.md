@@ -252,6 +252,16 @@ Removed unnecessary nested try catch block in CourseController.ts. Transferred e
 
 Removed unnecessary *async* modifier.
 
+### Commit 17 – C17
+
+Added services. Added error handlers. Updated application structure.
+
+Routers: Manage which actions (validation, sanitization, controller/middleware methods) are performed on a specific API call.
+
+Controllers: Handle all of our business logic.
+
+Services: Manage the CRUD (create, read, update, delete) operations on our database.
+
 ## Known Issues
 
 A set of all known issues in this project.
