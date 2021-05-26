@@ -30,13 +30,24 @@ Alternatively it is possible to run generate a npm project with defaults by addi
 `npm init -y`
 
 Now first we install some necessary dependecies:\
-`npm i express @types/express express-validator @types/express-validator`
+`npm i express express-validator`\
+`npm i -D @types/express @types/express-validator`\
 to provide the server-side logic for our project\
 `npm i -D typescript @types/node nodemon` (devDependencies for ts and monitoring + re-running on changes)\
-`npm i mysql2` database driver for MySQL (if you choose another database, please change your driver accordingly)
-`npm i dotenv` to load the environment variables from our process.env file
-`npm i @types/dotenv` dotenv for typescript
-`npm i bcrypt @types/bcrypt` to hash our stored course password
+`npm i mysql2` database driver for MySQL (if you choose another database, please change your driver accordingly)\
+`npm i dotenv` to load the environment variables from our process.env file\
+`npm i -D @types/dotenv` dotenv for typescript\
+`npm i bcrypt @types/bcrypt` to hash our stored course password\
+`npm i cors` to set cors policy in express\
+`npm i -D @types/cors`\
+`npm i jsonwebtoken` to create our own jwt for authentication\
+`npm i -D @types/jsonwebtoken`\
+`npm i passport` to authenticate via OAuth 2.0 authentication provider\
+`npm i -D @types/passport`\
+`npm i passport-oauth2` to create our own passport strategies\
+`npm i -D @types/passport-oauth2`
+
+
 
 Now create a tsconfig.json file in your root folder by either copying this [tsconfig.json](tsconfig.json) or setting up your own with the following command:\
 `npx tsc --init`
@@ -100,7 +111,8 @@ The first one will be our user table:
 ```
 CREATE TABLE User (
     id INT AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
+    provider_id INT NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
     role ENUM('Lecturer', 'Student') NOT NULL DEFAULT 'Student',
     PRIMARY KEY (id) 
 );
@@ -260,7 +272,18 @@ Routers: Manage which actions (validation, sanitization, controller/middleware m
 
 Controllers: Handle all of our business logic.
 
-Services: Manage the CRUD (create, read, update, delete) operations on our database.
+Services: Manage CRUD (create, read, update, delete) operations on our database.
+
+### Commit 18 - C18
+
+Added passport strategies (with GitHub and/or GitLab) to authenticate via OAuth 2.0. To set this up you need to create a an OAuth application on [Github](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) or [GitLab](https://docs.gitlab.com/ee/integration/oauth_provider.html#user-owned-applications). At the moment authentication with GitHub is enabled. If you want to switch to GitLab, you need to change the **GitHubOAuth2Strategy** to **GitLabOAuth2Strategy** in [authenticationRouter](src/routers/authenticationRouter.ts). Be aware that you might need to switch the gitlab host url. You can do so by passing the required one as a parameter. Moreover do not forget to set the CLIENT_ID, CLIENT_SECRET and CALLBACK_URL in your process.env. To get the passport strategies to work, you need to set the callback url as `http://localhost:3000/authenticate/provider/callback`.   
+
+Implemented own authentication flow to issue JSON Web Tokens (jwt refresh/access tokens) to the client. To verify tokens you need to provide a JWT_ACCESS_SECRET and a JWT_REFRESH_SECRET in your process.env. You can generate those keys by using crypto. Since it is a build-in module, just type `node` in your terminal. Then generate two keys with the following function: 
+```
+require('crypto').randomBytes(32).toString('hex')
+``` 
+
+Added cors policy for vscode. Modified models and project structure. Added profile route. Slightly modified services.  
 
 ## Known Issues
 

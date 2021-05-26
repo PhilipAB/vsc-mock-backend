@@ -1,5 +1,5 @@
 import { Pool } from 'mysql2/promise';
-import { BasicUser } from '../models/BasicUser';
+import { BasicUser } from '../models/user/BasicUser';
 import { connectionPool } from '../connection/connectionPool';
 
 class UserService {
@@ -8,11 +8,19 @@ class UserService {
     promisePool: Pool = connectionPool.promise();
 
     create(user: BasicUser) {
-        return this.promisePool.query("INSERT INTO `User` (`name`, `role`) VALUES(?, ?)", [user.name, user.role]);
+        return this.promisePool.query("INSERT INTO `User` (`provider_id`, `name`) VALUES(?, ?)", [user.provider_id, user.name]);
     }
 
-    getUserRoleById(id: number) {
-        return this.promisePool.query("SELECT `role` FROM `User` WHERE `id` = ?", [id]);
+    findByProviderId(providerId: number) {
+        return this.promisePool.query("SELECT * FROM `User` WHERE `provider_id` = ?", [providerId]);
+    }
+
+    findById(userId: number) {
+        return this.promisePool.query("SELECT * FROM `User` WHERE `id` = ?", [userId]);
+    }
+
+    getUserRoleById(userId: number) {
+        return this.promisePool.query("SELECT `role` FROM `User` WHERE `id` = ?", [userId]);
     }
 
     getAll() {

@@ -1,4 +1,4 @@
-import { CourseRoleType } from "src/types/CourseRoleType";
+import { CourseRoleType } from "../../types/roles/CourseRoleType";
 import { BasicCourseUserRelation } from "./BasicCourseUserRelation";
 
 /* In case we only need to process the hidden property of a course user relation. */

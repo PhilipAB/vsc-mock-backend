@@ -1,5 +1,5 @@
 import { Pool } from 'mysql2/promise';
-import { BasicCourse } from 'src/models/BasicCourse';
+import { BasicCourse } from '../models/course/BasicCourse';
 import { connectionPool } from '../connection/connectionPool';
 
 class CourseService {
@@ -8,7 +8,7 @@ class CourseService {
 
     create(course: BasicCourse) {
         return this.promisePool.query(
-            "INSERT INTO `Course` (`name`, `password`, `creator_id`) VALUES(?, ?, ?)", [course.name, course.password, course.creatorId]
+            "INSERT INTO `Course` (`name`, `password`, `creator_id`) VALUES(?, ?, ?)", [course.name, course.password, course.userId]
         );
     }
 

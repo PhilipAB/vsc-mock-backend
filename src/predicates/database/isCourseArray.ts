@@ -1,6 +1,6 @@
 import { OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2/typings/mysql';
 import { isNonEmptyRowDataPacketArray } from './isNonEmptyRowDataPacketArray';
-import { Course } from '../models/Course';
+import { Course } from '../../models/course/Course';
 
 // Instanceof runtime checks are not working for interfaces since they can not be instantiated
 // Type predicate to check if rows are assignable to non-empty course array

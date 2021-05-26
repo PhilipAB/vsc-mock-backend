@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+import { Request } from "express";
+import { Response } from 'express-serve-static-core';
 
 class NotFoundErrorHandler {
     async handleNotFoundError(_req: Request, res: Response) {

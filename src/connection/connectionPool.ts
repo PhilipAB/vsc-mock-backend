@@ -1,6 +1,4 @@
 import mysql, { Pool } from 'mysql2';
-import * as dotenv from 'dotenv';
-dotenv.config({ path: './process.env' });
 
 /* Connection pools help reduce the time spent connecting to the MySQL server by reusing a previous connection, 
 leaving them open instead of closing when you are done with them.

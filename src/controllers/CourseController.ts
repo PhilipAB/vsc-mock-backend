@@ -1,12 +1,13 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
+import { Response } from 'express-serve-static-core';
 import * as bcrypt from 'bcrypt';
-import { isResultSetHeader } from '../predicates/isResultSetHeader';
-import { isCourseArray } from '../predicates/isCourseArray';
+import { isResultSetHeader } from '../predicates/database/isResultSetHeader';
+import { isCourseArray } from '../predicates/database/isCourseArray';
 import courseService from '../services/CourseService';
 import courseUserRelationService from '../services/CourseUserRelationService';
-import { BasicCoursePwd } from '../models/BasicCoursePwd';
-import { CourseUserRelationRole } from '../models/CourseUserRelationRole';
-import { CourseRoleType } from '../types/CourseRoleType';
+import { BasicCoursePwd } from '../models/course/BasicCoursePwd';
+import { CourseUserRelationRole } from '../models/courseUserRelation/CourseUserRelationRole';
+import { CourseRoleType } from '../types/roles/CourseRoleType';
 
 
 class CourseController {
@@ -22,7 +23,7 @@ class CourseController {
             const [result, _fields] = await courseService.create(course);
             if (isResultSetHeader(result)) {
                 const courseUserRelation: CourseUserRelationRole = {
-                    userId: course.creatorId,
+                    userId: course.userId,
                     courseId: result.insertId,
                     role: CourseRoleType.CourseAdmin
                 }

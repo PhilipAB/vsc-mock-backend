@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { body } from "express-validator";
 import courseController from "../controllers/CourseController";
-import userMiddleware from "../middleware/authorization/UserMiddleware";
+import userMiddleware from "../middleware/auth/UserMiddleware";
 
 import validationErrorHandler from "../middleware/errors/ValidationErrorHandler";
 
@@ -17,9 +17,8 @@ courseRouter.post('/',
         .matches('[0-9]').withMessage('Password must contain a number')
         .matches('[A-Z]').withMessage('Password must contain an uppercase letter')
         .escape().trim(),
-    body('creatorId').notEmpty().isNumeric()
-        .escape().trim(),
-    validationErrorHandler.handleValidationError,
+    validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
     userMiddleware.valideCourseCreationUserRights,
     courseController.createCourse);
 
