@@ -23,3 +23,15 @@ courseRouter.post('/',
     courseController.createCourse);
 
 courseRouter.get('/', courseController.getAllCourses);
+
+courseRouter.get('/myCourses',
+    userMiddleware.authenticateUser,
+    courseController.getCoursesByUserId);
+
+courseRouter.put('/hidden/:id',
+    userMiddleware.authenticateUser,
+    courseController.updateHiddenProperty);
+
+courseRouter.put('/starred/:id',
+    userMiddleware.authenticateUser,
+    courseController.updateStarProperty);

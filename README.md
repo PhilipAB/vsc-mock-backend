@@ -285,6 +285,10 @@ require('crypto').randomBytes(32).toString('hex')
 
 Added cors policy for vscode. Modified models and project structure. Added profile route. Slightly modified services.  
 
+### Commit 19 - C19
+
+Added course routes. It is now possible to retrieve courses by id and update their star/hidden property.
+
 ## Known Issues
 
 A set of all known issues in this project.

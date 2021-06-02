@@ -19,7 +19,13 @@ let refreshTokens: string[] = [];
 
 passport.use(new GitHubOAuth2Strategy(
     async (_accessToken: string, _refreshToken: string, profile: GitProviderProfile, verified: VerifyCallback) => {
-        const user: BasicUser = { provider_id: profile.id, name: profile.name };
+        let user: BasicUser;
+        // Important to check, if name is not null! Otherwise we will get an SQL error.  
+        if (profile.name) {
+            user = { provider_id: profile.id, name: profile.name };
+        } else {
+            user = { provider_id: profile.id, name: "" };
+        }
         const uId: number = await userController.findOrCreateUser(user);
         verified(null, {
             refreshToken: jwt.sign(
@@ -65,8 +71,8 @@ authenticationRouter.post("/refresh",
     ValidationErrorHandler.handleTokenValidationError,
     (req: Request, res: Response) => {
         const refreshToken: string = req.body.token;
-        if (!refreshTokens.includes(refreshToken)) { 
-            res.status(403).json({error: "Refresh token could not be verified!"});
+        if (!refreshTokens.includes(refreshToken)) {
+            res.status(403).json({ error: "Refresh token could not be verified!" });
         } else {
             jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err: VerifyErrors | null, payload: object | undefined): void => {
                 if (payload && isPayloadWithUserId(payload)) {
@@ -74,7 +80,7 @@ authenticationRouter.post("/refresh",
                         { userId: payload.userId },
                         process.env.JWT_ACCESS_SECRET,
                         {
-                            expiresIn: '0.5h' 
+                            expiresIn: '0.5h'
                         }
                     );
                     res.json({ accessToken: accessToken })

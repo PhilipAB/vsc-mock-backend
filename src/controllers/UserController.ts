@@ -47,7 +47,6 @@ class UserController {
             const userId: number = req.body.userId;
             const [user, _fields] = await userService.findById(userId);
             if (isUserArray(user)) {
-                console.log(user[0]);
                 res.status(200).send(user[0]);
             }
             else {

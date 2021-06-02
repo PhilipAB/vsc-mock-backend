@@ -8,6 +8,9 @@ import courseUserRelationService from '../services/CourseUserRelationService';
 import { BasicCoursePwd } from '../models/course/BasicCoursePwd';
 import { CourseUserRelationRole } from '../models/courseUserRelation/CourseUserRelationRole';
 import { CourseRoleType } from '../types/roles/CourseRoleType';
+import { isCourseExtendedArray } from '../predicates/database/isCourseExtendedArray';
+import { CourseUserRelationStarred } from 'src/models/courseUserRelation/CourseUserRelationStarred';
+import { CourseUserRelationHidden } from 'src/models/courseUserRelation/CourseUserRelationHidden';
 
 
 class CourseController {
@@ -50,6 +53,49 @@ class CourseController {
             else {
                 res.status(500).json({ error: "Course data could not be processed!" }).send();
             }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getCoursesByUserId(req: Request, res: Response) {
+        try {
+            const userId: number = req.body.userId;
+            const [courseRows, _fields] = await courseUserRelationService.getAllCoursesForUserById(userId);
+            if (Array.isArray(courseRows) && courseRows.length === 0 || isCourseExtendedArray(courseRows)) {
+                res.status(200).send(courseRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async updateHiddenProperty(req: Request, res: Response) {
+        const courseUserRelation: CourseUserRelationHidden = {
+            userId: req.body.userId,
+            hidden: req.body.hidden,
+            courseId: Number(req.params.id),
+        }
+        try {
+            await courseUserRelationService.updateHiddenProperty(courseUserRelation);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async updateStarProperty(req: Request, res: Response) {
+        const courseUserRelation: CourseUserRelationStarred = {
+            userId: req.body.userId,
+            starred: req.body.starred,
+            courseId: Number(req.params.id),
+        }
+        try {
+            await courseUserRelationService.updateStarProperty(courseUserRelation);
+            res.sendStatus(200);
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }

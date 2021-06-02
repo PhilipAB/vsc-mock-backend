@@ -16,7 +16,7 @@ class CourseUserRelationService {
 
     getAllCoursesForUserById(userId: number) {
         return this.promisePool.query(
-            "SELECT `c_id` FROM `CourseUserRelation` AS cur\
+            "SELECT `c_id` AS course_id, `name`, `hidden`, `starred`, `role` FROM `CourseUserRelation` AS cur\
             JOIN (SELECT `id`, `name`, `creator_id` FROM `Course`) AS `c` on cur.c_id = c.id\
             WHERE cur.u_id = ?", [userId]);
     }
@@ -42,7 +42,7 @@ class CourseUserRelationService {
         courseUserRelation.starred ? starred = 1 : starred = 0;
         return this.promisePool.query(
             "UPDATE `CourseUserRelation`\
-            SET `is_starred` = ?\
+            SET `starred` = ?\
             WHERE `u_id` = ? AND `c_id` =?", [starred, courseUserRelation.userId, courseUserRelation.courseId]);
 
     }
@@ -53,7 +53,7 @@ class CourseUserRelationService {
         courseUserRelation.hidden ? hidden = 1 : hidden = 0;
         return this.promisePool.query(
             "UPDATE `CourseUserRelation`\
-            SET `is_hidden` = ?\
+            SET `hidden` = ?\
             WHERE `u_id` = ? AND `c_id` =?", [hidden, courseUserRelation.userId, courseUserRelation.courseId]);
     }
 }
