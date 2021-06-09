@@ -3,6 +3,7 @@ import { connectionPool } from "../connection/connectionPool";
 import { CourseUserRelationRole } from "../models/courseUserRelation/CourseUserRelationRole";
 import { CourseUserRelationHidden } from "../models/courseUserRelation/CourseUserRelationHidden";
 import { CourseUserRelationStarred } from "../models/courseUserRelation/CourseUserRelationStarred";
+import { BasicCourseUserRelation } from "src/models/courseUserRelation/BasicCourseUserRelation";
 
 class CourseUserRelationService {
 
@@ -26,6 +27,13 @@ class CourseUserRelationService {
             "SELECT `u_id` FROM `CourseUserRelation` AS cur\
             JOIN (SELECT `id`, `name`, `role` FROM `User`) AS `u` on cur.u_id = u.id\
             WHERE cur.c_id = ?", [courseId]);
+    }
+
+    getCourseUserRelationById(courseUserRelation: BasicCourseUserRelation) {
+        return this.promisePool.query(
+            "SELECT `name`, `hidden`, `starred`, `role` FROM `CourseUserRelation` AS cur\
+            JOIN (SELECT `id`, `name`, `creator_id` FROM `Course`) AS `c` on cur.c_id = c.id\
+            WHERE cur.u_id = ? AND cur.c_id = ?", [courseUserRelation.userId, courseUserRelation.courseId]);
     }
 
     updateRoleProperty(courseUserRelation: CourseUserRelationRole) {

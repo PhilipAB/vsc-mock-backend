@@ -9,8 +9,11 @@ import { BasicCoursePwd } from '../models/course/BasicCoursePwd';
 import { CourseUserRelationRole } from '../models/courseUserRelation/CourseUserRelationRole';
 import { CourseRoleType } from '../types/roles/CourseRoleType';
 import { isCourseExtendedArray } from '../predicates/database/isCourseExtendedArray';
-import { CourseUserRelationStarred } from 'src/models/courseUserRelation/CourseUserRelationStarred';
-import { CourseUserRelationHidden } from 'src/models/courseUserRelation/CourseUserRelationHidden';
+import { CourseUserRelationStarred } from '../models/courseUserRelation/CourseUserRelationStarred';
+import { CourseUserRelationHidden } from '../models/courseUserRelation/CourseUserRelationHidden';
+import { BasicCourseUserRelation } from '../models/courseUserRelation/BasicCourseUserRelation';
+import { CoursePwd } from '../models/course/CoursePwd';
+import { isPasswordArray } from '../predicates/database/isPasswordArray';
 
 
 class CourseController {
@@ -73,11 +76,51 @@ class CourseController {
         }
     }
 
+    async signUpForCourse(req: Request, res: Response) {
+        const course: CoursePwd = req.body;
+        try {
+            const [coursePwd, _fields] = await courseService.getPasswordById(course.id);
+            if (isPasswordArray(coursePwd)) {
+                const match = await bcrypt.compare(course.password, coursePwd[0].password);
+                if (match) {
+                    const courseUserRelation: CourseUserRelationRole = {
+                        userId: course.userId,
+                        courseId: course.id,
+                        role: CourseRoleType.Student
+                    }
+                    await courseUserRelationService.create(courseUserRelation);
+                    res.status(201).send(courseUserRelation);
+                } else {
+                    res.sendStatus(401);
+                }
+            } else {
+                res.sendStatus(401);
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async findCourseUserRelation(req: Request, res: Response) {
+        const courseUserRelation: BasicCourseUserRelation = {
+            userId: req.body.userId,
+            courseId: Number(req.params.id)
+        }
+        try {
+            const [existingCourse, _fields] = await courseUserRelationService.getCourseUserRelationById(courseUserRelation);
+            // "existingCourse" is an empty array, if no such courseUserRelation exists in database.
+            res.send(existingCourse);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+
+    }
+
     async updateHiddenProperty(req: Request, res: Response) {
         const courseUserRelation: CourseUserRelationHidden = {
             userId: req.body.userId,
             hidden: req.body.hidden,
-            courseId: Number(req.params.id),
+            courseId: Number(req.params.id)
         }
         try {
             await courseUserRelationService.updateHiddenProperty(courseUserRelation);

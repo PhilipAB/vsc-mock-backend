@@ -19,6 +19,11 @@ class CourseService {
     getAllCreatedCoursesById(creatorId: number) {
         return this.promisePool.query("SELECT `id`, `name`, `creator_id` FROM `Course` WHERE `creator_id` = ?", [creatorId]);
     }
+
+    // Encrypted password. Should only be used internally, to verify password upon registration for a course. 
+    getPasswordById(courseId: number) {
+        return this.promisePool.query("SELECT `password` FROM `Course` WHERE `id` = ?", [courseId]);
+    }
 }
 
 export default new CourseService();

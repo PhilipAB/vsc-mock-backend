@@ -22,7 +22,20 @@ courseRouter.post('/',
     userMiddleware.valideCourseCreationUserRights,
     courseController.createCourse);
 
+courseRouter.post('/signUp',
+    body('id').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    body('password').isString()
+        .escape().trim(),
+    validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
+    courseController.signUpForCourse)
+
 courseRouter.get('/', courseController.getAllCourses);
+
+courseRouter.get('/course/:id',
+    userMiddleware.authenticateUser,
+    courseController.findCourseUserRelation);
 
 courseRouter.get('/myCourses',
     userMiddleware.authenticateUser,

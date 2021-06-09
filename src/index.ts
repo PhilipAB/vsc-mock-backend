@@ -13,7 +13,7 @@ import cors from 'cors';
 const app: express.Application = express();
 const port: string | number = process.env.PORT || 3000;
 
-app.use(cors({ origin: "vscode-webview://webviewview-sidebar" }));
+app.use(cors({ origin: /vscode-webview:\/\//i }));
 
 // An authentication server could be used for multiple applications. 
 // Therefore, in production environment it may be useful isolating authentication functionality to its own server.

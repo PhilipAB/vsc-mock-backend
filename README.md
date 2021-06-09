@@ -289,6 +289,10 @@ Added cors policy for vscode. Modified models and project structure. Added profi
 
 Added course routes. It is now possible to retrieve courses by id and update their star/hidden property.
 
+### Commit 20 - C20
+
+Added course routes. It is now possible to sign up for courses and access them by their id. 
+
 ## Known Issues
 
 A set of all known issues in this project.
