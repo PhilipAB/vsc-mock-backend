@@ -4,6 +4,7 @@ import { Response } from 'express-serve-static-core';
 import { isResultSetHeader } from '../predicates/database/isResultSetHeader';
 import userService from '../services/UserService';
 import { isUserArray } from '../predicates/database/isUserArray';
+import courseUserRelationService from '../services/CourseUserRelationService';
 
 class UserController {
 
@@ -68,6 +69,22 @@ class UserController {
             }
             else {
                 res.status(500).json({ error: "User data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getUsersByCourseId(req: Request, res: Response) {
+        try {
+            const courseId: number = Number(req.params.id);
+            const [userRows, _fields] = await courseUserRelationService.getAllUsersForCourseById(courseId);
+            // ToDo: At the moment just course role but no user role (Student/Lecturer) is returned.
+            if (Array.isArray(userRows) && userRows.length === 0 || isUserArray(userRows)) {
+                res.status(200).send(userRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
             }
         } catch (error) {
             res.status(500).json({ error: error }).send();

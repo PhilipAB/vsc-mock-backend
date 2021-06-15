@@ -143,6 +143,24 @@ class CourseController {
             res.status(500).json({ error: error }).send();
         }
     }
+
+    async updateRoleProperty(req: Request, res: Response) {
+        const courseUserRelation: CourseUserRelationRole = {
+            userId: Number(req.params.uId),
+            role: req.body.role,
+            courseId: Number(req.params.cId),
+        }
+        try {
+            if (courseUserRelation.userId !== req.body.userId) {
+                await courseUserRelationService.updateRoleProperty(courseUserRelation);
+                res.sendStatus(200);
+            } else {
+                res.status(400).json({error: "Unable to update user's own course role!"}).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
 }
 
 export default new CourseController();

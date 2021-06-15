@@ -12,11 +12,11 @@ class UserService {
     }
 
     findByProviderId(providerId: number) {
-        return this.promisePool.query("SELECT * FROM `User` WHERE `provider_id` = ?", [providerId]);
+        return this.promisePool.query("SELECT `id`, `name`, `role` FROM `User` WHERE `provider_id` = ?", [providerId]);
     }
 
     findById(userId: number) {
-        return this.promisePool.query("SELECT * FROM `User` WHERE `id` = ?", [userId]);
+        return this.promisePool.query("SELECT `id`, `name`, `role` FROM `User` WHERE `id` = ?", [userId]);
     }
 
     getUserRoleById(userId: number) {
@@ -24,7 +24,7 @@ class UserService {
     }
 
     getAll() {
-        return this.promisePool.query("SELECT * FROM `User`");
+        return this.promisePool.query("SELECT `id`, `name`, `role` FROM `User`");
     }
 
 }

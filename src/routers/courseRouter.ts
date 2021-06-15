@@ -1,9 +1,10 @@
 import express, { Router } from "express";
 import { body } from "express-validator";
+import courseMiddleware from "../middleware/auth/CourseMiddleware";
 import courseController from "../controllers/CourseController";
 import userMiddleware from "../middleware/auth/UserMiddleware";
-
 import validationErrorHandler from "../middleware/errors/ValidationErrorHandler";
+import userController from "../controllers/UserController";
 
 export const courseRouter: Router = express.Router();
 
@@ -37,6 +38,11 @@ courseRouter.get('/course/:id',
     userMiddleware.authenticateUser,
     courseController.findCourseUserRelation);
 
+courseRouter.get('/course/:id/users',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    userController.getUsersByCourseId);
+
 courseRouter.get('/myCourses',
     userMiddleware.authenticateUser,
     courseController.getCoursesByUserId);
@@ -48,3 +54,8 @@ courseRouter.put('/hidden/:id',
 courseRouter.put('/starred/:id',
     userMiddleware.authenticateUser,
     courseController.updateStarProperty);
+
+courseRouter.put('/role/:cId/:uId',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseAdmin,
+    courseController.updateRoleProperty);

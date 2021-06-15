@@ -297,6 +297,10 @@ Added course routes. It is now possible to sign up for courses and access them b
 
 Added validation of Course Admin/Teacher rights.
 
+### Commit 22 - C22
+
+Added course routes. It is now possible to get users from course id and to update their user roles if course admin role is validated.
+
 ## Known Issues
 
 A set of all known issues in this project.

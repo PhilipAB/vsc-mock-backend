@@ -10,10 +10,9 @@ export function isUserArray(data: RowDataPacket[] | RowDataPacket[][] | OkPacket
         // verify that data is type of non-empty RowDataPacket[]
         isNonEmptyRowDataPacketArray(data) &&
         // verify data[0] object key length matches Users key length
-        Object.keys(data[0]).length === 4 &&
+        Object.keys(data[0]).length === 3 &&
         // check if User properties id, name and role are defined
         data[0].id !== undefined &&
-        data[0].provider_id !== undefined &&
         data[0].name !== undefined &&
         data[0].role !== undefined);
 }

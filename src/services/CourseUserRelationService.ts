@@ -24,8 +24,8 @@ class CourseUserRelationService {
 
     getAllUsersForCourseById(courseId: number) {
         return this.promisePool.query(
-            "SELECT `u_id` FROM `CourseUserRelation` AS cur\
-            JOIN (SELECT `id`, `name`, `role` FROM `User`) AS `u` on cur.u_id = u.id\
+            "SELECT `id`, `name`, `role` FROM `CourseUserRelation` AS cur\
+            JOIN (SELECT `id`, `name` FROM `User`) AS `u` on cur.u_id = u.id\
             WHERE cur.c_id = ?", [courseId]);
     }
 
@@ -33,6 +33,13 @@ class CourseUserRelationService {
         return this.promisePool.query(
             "SELECT `name`, `hidden`, `starred`, `role` FROM `CourseUserRelation` AS cur\
             JOIN (SELECT `id`, `name`, `creator_id` FROM `Course`) AS `c` on cur.c_id = c.id\
+            WHERE cur.u_id = ? AND cur.c_id = ?", [courseUserRelation.userId, courseUserRelation.courseId]);
+    }
+
+    getCourseRoleById(courseUserRelation: BasicCourseUserRelation) {
+        return this.promisePool.query(
+            "SELECT `role` FROM `CourseUserRelation` AS cur\
+            JOIN (SELECT `id` FROM `Course`) AS `c` on cur.c_id = c.id\
             WHERE cur.u_id = ? AND cur.c_id = ?", [courseUserRelation.userId, courseUserRelation.courseId]);
     }
 
