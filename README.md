@@ -291,7 +291,11 @@ Added course routes. It is now possible to retrieve courses by id and update the
 
 ### Commit 20 - C20
 
-Added course routes. It is now possible to sign up for courses and access them by their id. 
+Added course routes. It is now possible to sign up for courses and access them by their id.
+
+### Commit 21 - C21
+
+Added validation of Course Admin/Teacher rights.
 
 ## Known Issues
 
