@@ -18,6 +18,8 @@ courseRouter.post('/',
         .matches('[0-9]').withMessage('Password must contain a number')
         .matches('[A-Z]').withMessage('Password must contain an uppercase letter')
         .escape().trim(),
+    body('description').isString()
+        .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
     userMiddleware.authenticateUser,
     userMiddleware.valideCourseCreationUserRights,
@@ -54,6 +56,10 @@ courseRouter.put('/hidden/:id',
 courseRouter.put('/starred/:id',
     userMiddleware.authenticateUser,
     courseController.updateStarProperty);
+
+courseRouter.put('/visited/:id',
+    userMiddleware.authenticateUser,
+    courseController.updateVisitedProperty);
 
 courseRouter.put('/role/:cId/:uId',
     userMiddleware.authenticateUser,

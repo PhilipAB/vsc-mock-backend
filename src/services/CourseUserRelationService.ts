@@ -3,7 +3,7 @@ import { connectionPool } from "../connection/connectionPool";
 import { CourseUserRelationRole } from "../models/courseUserRelation/CourseUserRelationRole";
 import { CourseUserRelationHidden } from "../models/courseUserRelation/CourseUserRelationHidden";
 import { CourseUserRelationStarred } from "../models/courseUserRelation/CourseUserRelationStarred";
-import { BasicCourseUserRelation } from "src/models/courseUserRelation/BasicCourseUserRelation";
+import { BasicCourseUserRelation } from "../models/courseUserRelation/BasicCourseUserRelation";
 
 class CourseUserRelationService {
 
@@ -17,8 +17,8 @@ class CourseUserRelationService {
 
     getAllCoursesForUserById(userId: number) {
         return this.promisePool.query(
-            "SELECT `c_id` AS course_id, `name`, `hidden`, `starred`, `role` FROM `CourseUserRelation` AS cur\
-            JOIN (SELECT `id`, `name`, `creator_id` FROM `Course`) AS `c` on cur.c_id = c.id\
+            "SELECT `c_id` AS course_id, `name`, `hidden`, `starred`, `role`, `description`, `visited` FROM `CourseUserRelation` AS cur\
+            JOIN (SELECT `id`, `name`, `creator_id`, `description` FROM `Course`) AS `c` on cur.c_id = c.id\
             WHERE cur.u_id = ?", [userId]);
     }
 
@@ -31,8 +31,8 @@ class CourseUserRelationService {
 
     getCourseUserRelationById(courseUserRelation: BasicCourseUserRelation) {
         return this.promisePool.query(
-            "SELECT `name`, `hidden`, `starred`, `role` FROM `CourseUserRelation` AS cur\
-            JOIN (SELECT `id`, `name`, `creator_id` FROM `Course`) AS `c` on cur.c_id = c.id\
+            "SELECT `name`, `hidden`, `starred`, `role`, `description`, `visited` FROM `CourseUserRelation` AS cur\
+            JOIN (SELECT `id`, `name`, `creator_id`, `description` FROM `Course`) AS `c` on cur.c_id = c.id\
             WHERE cur.u_id = ? AND cur.c_id = ?", [courseUserRelation.userId, courseUserRelation.courseId]);
     }
 
@@ -48,7 +48,6 @@ class CourseUserRelationService {
             "UPDATE `CourseUserRelation`\
             SET `role` = ?\
             WHERE `u_id` = ? AND `c_id` =?", [courseUserRelation.role, courseUserRelation.userId, courseUserRelation.courseId]);
-
     }
 
     updateStarProperty(courseUserRelation: CourseUserRelationStarred) {
@@ -59,7 +58,6 @@ class CourseUserRelationService {
             "UPDATE `CourseUserRelation`\
             SET `starred` = ?\
             WHERE `u_id` = ? AND `c_id` =?", [starred, courseUserRelation.userId, courseUserRelation.courseId]);
-
     }
 
     updateHiddenProperty(courseUserRelation: CourseUserRelationHidden) {
@@ -70,6 +68,13 @@ class CourseUserRelationService {
             "UPDATE `CourseUserRelation`\
             SET `hidden` = ?\
             WHERE `u_id` = ? AND `c_id` =?", [hidden, courseUserRelation.userId, courseUserRelation.courseId]);
+    }
+
+    updateVisitedProperty(courseUserRelation: BasicCourseUserRelation) {
+        return this.promisePool.query(
+            "UPDATE `CourseUserRelation`\
+            SET `visited` = UTC_TIMESTAMP() \
+            WHERE `u_id` = ? AND `c_id` =?", [courseUserRelation.userId, courseUserRelation.courseId]);
     }
 }
 

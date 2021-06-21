@@ -3,5 +3,6 @@ import { RowDataPacket } from "mysql2/typings/mysql";
 
 export interface BasicCourse extends RowDataPacket {
     name: string,
-    userId: number //creatorId of a course
+    userId: number, //creatorId of a course
+    description: string
 }

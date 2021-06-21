@@ -15,7 +15,6 @@ import { BasicCourseUserRelation } from '../models/courseUserRelation/BasicCours
 import { CoursePwd } from '../models/course/CoursePwd';
 import { isPasswordArray } from '../predicates/database/isPasswordArray';
 
-
 class CourseController {
 
     async createCourse(req: Request, res: Response) {
@@ -155,8 +154,21 @@ class CourseController {
                 await courseUserRelationService.updateRoleProperty(courseUserRelation);
                 res.sendStatus(200);
             } else {
-                res.status(400).json({error: "Unable to update user's own course role!"}).send();
+                res.status(400).json({ error: "Unable to update user's own course role!" }).send();
             }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async updateVisitedProperty(req: Request, res: Response) {
+        const courseUserRelation: BasicCourseUserRelation = {
+            userId: req.body.userId,
+            courseId: Number(req.params.id)
+        }
+        try {
+            await courseUserRelationService.updateVisitedProperty(courseUserRelation);
+            res.sendStatus(200);
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }

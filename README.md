@@ -124,7 +124,8 @@ CREATE TABLE Course (
     id INT AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    creator_id INT NOT NULL, 
+    creator_id INT NOT NULL,
+    description TEXT, 
     PRIMARY KEY (id),
     FOREIGN KEY (creator_id) REFERENCES User(id)
 );
@@ -138,6 +139,7 @@ CREATE TABLE CourseUserRelation (
     hidden BOOLEAN NOT NULL DEFAULT 0,
     starred BOOLEAN NOT NULL DEFAULT 0,
     role ENUM('CourseAdmin', 'Teacher', 'Student') NOT NULL DEFAULT 'Student',
+    visited DATETIME,
     PRIMARY KEY (u_id, c_id),
     FOREIGN KEY (u_id) REFERENCES User(id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
@@ -300,6 +302,10 @@ Added validation of Course Admin/Teacher rights.
 ### Commit 22 - C22
 
 Added course routes. It is now possible to get users from course id and to update their user roles if course admin role is validated.
+
+### Commit 23 - C23
+
+Added **description** column to Course table and **visited** column to Courseuserrelation table. Added route to update visited column.
 
 ## Known Issues
 

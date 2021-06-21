@@ -10,9 +10,10 @@ export function isCourseArray(data: RowDataPacket[] | RowDataPacket[][] | OkPack
         // verify that data is type of non-empty RowDataPacket[]
         isNonEmptyRowDataPacketArray(data) &&
         // verify data[0] object key length matches Course key length
-        Object.keys(data[0]).length === 3 &&
+        Object.keys(data[0]).length === 4 &&
         // check if Course properties id, name and creator_id are defined
         data[0].id !== undefined &&
         data[0].name !== undefined &&
-        data[0].creator_id !== undefined);
+        data[0].creator_id !== undefined &&
+        data[0].description !== undefined);
 }
