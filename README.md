@@ -144,7 +144,7 @@ CREATE TABLE CourseUserRelation (
     FOREIGN KEY (u_id) REFERENCES User(id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
 );
-```
+``` 
 
 To connect to your database, you need to create a new process.env file with the following environment variables:\
 PORT=3000 *(or any different port that you may prefer)*\
@@ -310,6 +310,10 @@ Added **description** column to Course table and **visited** column to Courseuse
 ### Commit 24 - C24
 
 Changed status code to 409 on duplicate entries for course name. 
+
+### Commit 25 - C 25
+
+Added authentication for get (all) courses route.
 
 ## Known Issues
 

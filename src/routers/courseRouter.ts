@@ -34,7 +34,9 @@ courseRouter.post('/signUp',
     userMiddleware.authenticateUser,
     courseController.signUpForCourse)
 
-courseRouter.get('/', courseController.getAllCourses);
+courseRouter.get('/',
+    userMiddleware.authenticateUser,
+    courseController.getAllCourses);
 
 courseRouter.get('/course/:id',
     userMiddleware.authenticateUser,
