@@ -307,6 +307,10 @@ Added course routes. It is now possible to get users from course id and to updat
 
 Added **description** column to Course table and **visited** column to Courseuserrelation table. Added route to update visited column.
 
+### Commit 24 - C24
+
+Changed status code to 409 on duplicate entries for course name. 
+
 ## Known Issues
 
 A set of all known issues in this project.

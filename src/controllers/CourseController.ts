@@ -39,7 +39,11 @@ class CourseController {
                 res.status(500).json({ error: "Course user relation data could not be processed!" }).send();
             }
         } catch (error) {
-            res.status(500).json({ error: error }).send();
+            if(error.code === 'ER_DUP_ENTRY') {
+                res.status(409).json({ error: error }).send();
+            } else {
+                res.status(500).json({ error: error }).send();
+            }
         }
     }
 
