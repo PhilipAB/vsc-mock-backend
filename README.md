@@ -105,7 +105,7 @@ Exit MySQL and connect with your newly created user to your new database:\
 `Enter password:` *`your vsc_user password`*
 `USE vsc_mock_backend_db`
 
-To begin with, we will create 3 Tables in our database. 
+To begin with, we will create 5 Tables in our database. 
 
 The first one will be our user table: 
 ```
@@ -131,7 +131,7 @@ CREATE TABLE Course (
 );
 ```
 
-And finally we will insert the course user relation table to resolve the many-to-many relationship:
+Now we will insert the course user relation table to resolve the many-to-many relationship:
 ```
 CREATE TABLE CourseUserRelation (
     u_id INT,
@@ -142,6 +142,29 @@ CREATE TABLE CourseUserRelation (
     visited DATETIME,
     PRIMARY KEY (u_id, c_id),
     FOREIGN KEY (u_id) REFERENCES User(id),
+    FOREIGN KEY (c_id) REFERENCES Course(id) 
+);
+```
+
+For Assignment creation we will use the following table:
+```
+CREATE TABLE Assignment (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE,
+	repository VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT, 
+    PRIMARY KEY (id)
+);
+```
+The repository column represents a git repository link where we clone our assignment from.
+
+Finally we will insert a simple course assignment table to map courses to assignments or vice versa:
+```
+CREATE TABLE CourseAssignmentRelation (
+    a_id INT,
+    c_id INT,
+    PRIMARY KEY (a_id, c_id),
+    FOREIGN KEY (a_id) REFERENCES Assignment(id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
 );
 ``` 
@@ -311,9 +334,26 @@ Added **description** column to Course table and **visited** column to Courseuse
 
 Changed status code to 409 on duplicate entries for course name. 
 
-### Commit 25 - C 25
+### Commit 25 - C25
 
 Added authentication for get (all) courses route.
+
+### Commit 26 - C26
+
+Added Assignment table and CourseAssignmentRelation table to database.\
+Implemented assignmentRouter with the following routes:\
+POST "/assignments" -> to create assignments\
+POST "/assignments/assignments/:aId/course/:cId" -> to add existing assignments to courses\
+GET "/assignments" -> to get all assignments\
+GET "/assignments/:id/courses" -> to get all courses which use a specific assignment
+
+Added the following route to courseRouter:\
+GET "/courses/course/:id/assignments" -> to get all assignments for a specific course
+
+Implemented needed internal logic in controllers, services and middleware for new routes.\
+Added some models for Assignments/CourseAssignmentRelation.\
+Added a new "SimpleCourse" Model which only contains id and name.\
+Added user-defined type guards for some of the new models.
 
 ## Known Issues
 

@@ -33,13 +33,13 @@ class UserMiddleware {
         }
     }
 
-    async valideCourseCreationUserRights(req: Request, res: Response, next: NextFunction) {
+    async valideCreationUserRights(req: Request, res: Response, next: NextFunction) {
         try {
             // User id is obtained from auth token -> therefore secure to get role from user id
             const [userRows, _userFields] = await userService.getUserRoleById(req.body.userId);
             if (isNonEmptyRowDataPacketArray(userRows) && userRows[0].role) {
                 if (userRows[0].role === UserRoleType.Student) {
-                    res.status(403).json({ error: "Access denied: Unauthorized attempt to create a course!" }).send();
+                    res.status(403).json({ error: "Access denied: Unauthorized attempt to create a course or assignment!" }).send();
                 }
                 else if (userRows[0].role === UserRoleType.Lecturer) {
                     next();

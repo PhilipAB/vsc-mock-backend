@@ -14,6 +14,8 @@ import { CourseUserRelationHidden } from '../models/courseUserRelation/CourseUse
 import { BasicCourseUserRelation } from '../models/courseUserRelation/BasicCourseUserRelation';
 import { CoursePwd } from '../models/course/CoursePwd';
 import { isPasswordArray } from '../predicates/database/isPasswordArray';
+import courseAssignmentRelationService from '../services/CourseAssignmentRelationService';
+import { isSimpleCourseArray } from '../predicates/database/isSimpleCourse';
 
 class CourseController {
 
@@ -39,7 +41,7 @@ class CourseController {
                 res.status(500).json({ error: "Course user relation data could not be processed!" }).send();
             }
         } catch (error) {
-            if(error.code === 'ER_DUP_ENTRY') {
+            if (error.code === 'ER_DUP_ENTRY') {
                 res.status(409).json({ error: error }).send();
             } else {
                 res.status(500).json({ error: error }).send();
@@ -70,6 +72,21 @@ class CourseController {
             const [courseRows, _fields] = await courseUserRelationService.getAllCoursesForUserById(userId);
             if (Array.isArray(courseRows) && courseRows.length === 0 || isCourseExtendedArray(courseRows)) {
                 res.status(200).send(courseRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getCoursesByAssignmentId(req: Request, res: Response) {
+        try {
+            const assignmentId: number = Number(req.params.id);
+            const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentById(assignmentId);
+            if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isSimpleCourseArray(assignmentRows)) {
+                res.status(200).send(assignmentRows);
             }
             else {
                 res.status(500).json({ error: "Course data could not be processed!" }).send();

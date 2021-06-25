@@ -5,6 +5,7 @@ dotenv.config({ path: './process.env' });
 
 import { userRouter } from './routers/UserRouter';
 import { courseRouter } from './routers/CourseRouter';
+import { assignmentRouter } from './routers/assignmentRouter';
 import { authenticationRouter } from './routers/authenticationRouter';
 import notFoundErrorHandler from './middleware/errors/NotFoundErrorHandler';
 import cors from 'cors';
@@ -22,6 +23,7 @@ app.use('/authenticate', authenticationRouter);
 
 app.use('/users', userRouter);
 app.use('/courses', courseRouter);
+app.use('/assignments', assignmentRouter);
 app.use(notFoundErrorHandler.handleNotFoundError);
 
 app.listen(port, () => {

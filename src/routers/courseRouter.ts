@@ -5,6 +5,7 @@ import courseController from "../controllers/CourseController";
 import userMiddleware from "../middleware/auth/UserMiddleware";
 import validationErrorHandler from "../middleware/errors/ValidationErrorHandler";
 import userController from "../controllers/UserController";
+import assignmentController from "../controllers/AssignmentController";
 
 export const courseRouter: Router = express.Router();
 
@@ -22,7 +23,7 @@ courseRouter.post('/',
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
     userMiddleware.authenticateUser,
-    userMiddleware.valideCourseCreationUserRights,
+    userMiddleware.valideCreationUserRights,
     courseController.createCourse);
 
 courseRouter.post('/signUp',
@@ -46,6 +47,11 @@ courseRouter.get('/course/:id/users',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
     userController.getUsersByCourseId);
+
+courseRouter.get('/course/:id/assignments',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    assignmentController.getAssignmentsByCourseId);
 
 courseRouter.get('/myCourses',
     userMiddleware.authenticateUser,

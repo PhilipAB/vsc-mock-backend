@@ -36,9 +36,11 @@ class CourseMiddleware {
 
     async valideCourseTeacher(req: Request, res: Response, next: NextFunction) {
         try {
+            // Course id is either send by route parameters or body.
+            const cId: number = req.body.courseId ?? Number(req.params.id); 
             // User id is obtained from auth token -> therefore secure to get role from user id
             const courseUserRelation: BasicCourseUserRelation = {
-                courseId: Number(req.params.id),
+                courseId: cId,
                 userId: req.body.userId
             }
             const [courseRole, _courseFields] = await courseUserRelationService.getCourseRoleById(courseUserRelation);
