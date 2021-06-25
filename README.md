@@ -355,6 +355,10 @@ Added some models for Assignments/CourseAssignmentRelation.\
 Added a new "SimpleCourse" Model which only contains id and name.\
 Added user-defined type guards for some of the new models.
 
+### Commit 27 - C27
+
+Added regular expression to validate repository url.
+
 ## Known Issues
 
 A set of all known issues in this project.

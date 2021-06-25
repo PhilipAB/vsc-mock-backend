@@ -15,7 +15,9 @@ assignmentRouter.post('/',
     body('name').notEmpty().isString()
         .escape().trim(),
     body('repository').notEmpty().isString()
-        .escape().trim(),
+        .trim()
+        .matches(/https:\/\/([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-z]{2,}([\/][^\s]*)*/i)
+        .withMessage('Repository must be a valid https:// url!'),
     body('description').isString()
         .escape().trim(),
     body('courseId').optional().isNumeric({ no_symbols: true })
