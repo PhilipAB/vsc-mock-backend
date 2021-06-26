@@ -363,6 +363,10 @@ Added regular expression to validate repository url.
 
 Implemented routes to retrieve unrelated courses/assignments.
 
+### Commit 29 - C29
+
+Implemented routes to update course name/description.
+
 ## Known Issues
 
 A set of all known issues in this project.

@@ -16,6 +16,8 @@ import { CoursePwd } from '../models/course/CoursePwd';
 import { isPasswordArray } from '../predicates/database/isPasswordArray';
 import courseAssignmentRelationService from '../services/CourseAssignmentRelationService';
 import { isSimpleCourseArray } from '../predicates/database/isSimpleCourse';
+import { SimpleCourse } from '../models/course/SimpleCourse';
+import { CourseDescription } from '../models/course/CourseDescription';
 
 class CourseController {
 
@@ -149,6 +151,34 @@ class CourseController {
             res.status(500).json({ error: error }).send();
         }
 
+    }
+
+    async updateName(req: Request, res: Response) {
+        const simpleCourse: SimpleCourse = {
+            constructor: {name: "RowDataPacket"},
+            id: Number(req.params.id),
+            name: req.body.name
+        }
+        try {
+            await courseService.updateName(simpleCourse);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async updateDescription(req: Request, res: Response) {
+        const courseDescription: CourseDescription = {
+            constructor: {name: "RowDataPacket"},
+            id: Number(req.params.id),
+            description: req.body.description
+        }
+        try {
+            await courseService.updateDescription(courseDescription);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
     }
 
     async updateHiddenProperty(req: Request, res: Response) {

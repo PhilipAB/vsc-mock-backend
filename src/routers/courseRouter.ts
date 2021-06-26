@@ -62,6 +62,16 @@ courseRouter.get('/myCourses',
     userMiddleware.authenticateUser,
     courseController.getCoursesByUserId);
 
+courseRouter.put('/name/:id',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseAdmin,
+    courseController.updateName); 
+
+courseRouter.put('/description/:id',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    courseController.updateDescription); 
+
 courseRouter.put('/hidden/:id',
     userMiddleware.authenticateUser,
     courseController.updateHiddenProperty);

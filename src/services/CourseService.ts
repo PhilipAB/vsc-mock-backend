@@ -1,6 +1,8 @@
 import { Pool } from 'mysql2/promise';
 import { BasicCoursePwd } from '../models/course/BasicCoursePwd';
 import { connectionPool } from '../connection/connectionPool';
+import { SimpleCourse } from '../models/course/SimpleCourse';
+import { CourseDescription } from '../models/course/CourseDescription';
 
 class CourseService {
 
@@ -24,6 +26,20 @@ class CourseService {
     // Encrypted password. Should only be used internally, to verify password upon registration for a course. 
     getPasswordById(courseId: number) {
         return this.promisePool.query("SELECT `password` FROM `Course` WHERE `id` = ?", [courseId]);
+    }
+
+    updateName(simpleCourse: SimpleCourse) {
+        return this.promisePool.query(
+            "UPDATE `Course`\
+            SET `name` = ?\
+            WHERE `id` = ?", [simpleCourse.name, simpleCourse.id]);
+    }
+
+    updateDescription(courseDescription: CourseDescription) {
+        return this.promisePool.query(
+            "UPDATE `Course`\
+            SET `description` = ?\
+            WHERE `id` = ?", [courseDescription.description, courseDescription.id]);
     }
 }
 
