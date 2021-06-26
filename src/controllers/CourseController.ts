@@ -96,6 +96,21 @@ class CourseController {
         }
     }
 
+    async getCoursesNotInCourseAssignmentRelation(req: Request, res: Response) {
+        try {
+            const assignmentId: number = Number(req.params.id);
+            const [assignmentRows, _fields] = await courseAssignmentRelationService.getCoursesNotInCourseAssignmentRelationById(req.body.userId, assignmentId);
+            if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isSimpleCourseArray(assignmentRows)) {
+                res.status(200).send(assignmentRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
     async signUpForCourse(req: Request, res: Response) {
         const course: CoursePwd = req.body;
         try {

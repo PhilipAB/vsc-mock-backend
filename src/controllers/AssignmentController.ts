@@ -89,6 +89,21 @@ class AssignmentController {
             res.status(500).json({ error: error }).send();
         }
     }
+
+    async getAssignmentsNotInCourseAssignmentRelation(req: Request, res: Response) {
+        try {
+            const courseId: number = Number(req.params.id);
+            const [assignmentRows, _fields] = await courseAssignmentRelationService.getAssignmentsNotInCourseAssignmentRelationById(courseId);
+            if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isAssignmentArray(assignmentRows)) {
+                res.status(200).send(assignmentRows);
+            }
+            else {
+                res.status(500).json({ error: "Course data could not be processed!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
 }
 
 export default new AssignmentController();

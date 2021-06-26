@@ -359,6 +359,10 @@ Added user-defined type guards for some of the new models.
 
 Added regular expression to validate repository url.
 
+### Commit 28 - C28
+
+Implemented routes to retrieve unrelated courses/assignments.
+
 ## Known Issues
 
 A set of all known issues in this project.

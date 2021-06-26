@@ -38,5 +38,8 @@ assignmentRouter.get('/',
 
 assignmentRouter.get('/assignment/:id/courses',
     userMiddleware.authenticateUser,
-    courseMiddleware.valideCourseTeacher,
     courseController.getCoursesByAssignmentId);
+
+assignmentRouter.get('/assignment/:id/courses/no-relation',
+    userMiddleware.authenticateUser,
+    courseController.getCoursesNotInCourseAssignmentRelation);
