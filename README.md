@@ -367,6 +367,11 @@ Implemented routes to retrieve unrelated courses/assignments.
 
 Implemented routes to update course name/description.
 
+### Commit 30 - C30
+
+Updated implementation to get courses by assignment id:
+GET "/assignments/:id/courses" now only returns the courses for which the user has the course rights "Teacher" or "CourseAdmin".
+
 ## Known Issues
 
 A set of all known issues in this project.

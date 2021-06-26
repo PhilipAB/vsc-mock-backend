@@ -12,11 +12,11 @@ class CourseUserRelationService {
         );
     }
 
-    getAllCoursesForAssignmentById(assignmentId: number) {
+    getAllCoursesForAssignmentById(assignmentId: number, userId: number) {
         return this.promisePool.query(
-            "SELECT `c_id` AS id, `name` FROM `CourseAssignmentRelation` AS `car`\
-            JOIN (SELECT `id`, `name` FROM `Course`) AS `c` on car.c_id = c.id\
-            WHERE car.a_id = ?", [assignmentId]);
+            "SELECT `id`, `name` FROM `Course` as `c`\
+            JOIN (SELECT `c_id` FROM `CourseAssignmentRelation` WHERE a_id = ?) AS `car` on car.c_id = c.id\
+            JOIN (SELECT `c_id` FROM `CourseUserRelation` WHERE u_id = ? AND (role = ? OR role = ?)) AS `cur` on cur.c_id = c.id", [assignmentId, userId, "Teacher", "CourseAdmin"]);
     }
 
     getAllAssignmentsForCourseById(courseId: number) {

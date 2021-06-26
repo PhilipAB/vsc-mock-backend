@@ -86,7 +86,8 @@ class CourseController {
     async getCoursesByAssignmentId(req: Request, res: Response) {
         try {
             const assignmentId: number = Number(req.params.id);
-            const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentById(assignmentId);
+            const userId: number = req.body.userId;
+            const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentById(assignmentId, userId);
             if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isSimpleCourseArray(assignmentRows)) {
                 res.status(200).send(assignmentRows);
             }
