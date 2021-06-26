@@ -39,6 +39,12 @@ class CourseUserRelationService {
             "SELECT `id`, `name`, `repository`, `description` FROM `Assignment` AS `a` WHERE a.id\
             NOT IN (Select `a_id` from `CourseAssignmentRelation` WHERE c_id = ?)", [courseId]);
     }
+
+    delete(courseAssignmentRelation: CourseAssignmentRelation) {
+        return this.promisePool.query(
+            "DELETE FROM `CourseAssignmentRelation` WHERE `a_id` = ? AND `c_id` = ?", [courseAssignmentRelation.assignmentId, courseAssignmentRelation.courseId]
+        );
+    }
 }
 
 export default new CourseUserRelationService();

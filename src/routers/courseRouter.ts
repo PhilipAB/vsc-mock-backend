@@ -65,12 +65,12 @@ courseRouter.get('/myCourses',
 courseRouter.put('/name/:id',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseAdmin,
-    courseController.updateName); 
+    courseController.updateName);
 
 courseRouter.put('/description/:id',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
-    courseController.updateDescription); 
+    courseController.updateDescription);
 
 courseRouter.put('/hidden/:id',
     userMiddleware.authenticateUser,
@@ -88,3 +88,8 @@ courseRouter.put('/role/:cId/:uId',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseAdmin,
     courseController.updateRoleProperty);
+
+courseRouter.delete('/course/:cId/assignment/:aId',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    courseController.deleteCourseAssignmentRelation);

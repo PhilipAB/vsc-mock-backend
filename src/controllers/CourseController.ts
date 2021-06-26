@@ -18,6 +18,7 @@ import courseAssignmentRelationService from '../services/CourseAssignmentRelatio
 import { isSimpleCourseArray } from '../predicates/database/isSimpleCourse';
 import { SimpleCourse } from '../models/course/SimpleCourse';
 import { CourseDescription } from '../models/course/CourseDescription';
+import { CourseAssignmentRelation } from '../models/courseAssignmentRelation/CourseAssignmentRelation';
 
 class CourseController {
 
@@ -235,6 +236,19 @@ class CourseController {
         }
         try {
             await courseUserRelationService.updateVisitedProperty(courseUserRelation);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async deleteCourseAssignmentRelation(req: Request, res: Response) {
+        const courseAssignmentRelation: CourseAssignmentRelation = {
+            courseId: Number(req.params.cId),
+            assignmentId: Number(req.params.aId)
+        }
+        try {
+            await courseAssignmentRelationService.delete(courseAssignmentRelation);
             res.sendStatus(200);
         } catch (error) {
             res.status(500).json({ error: error }).send();

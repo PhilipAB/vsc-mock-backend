@@ -372,6 +372,10 @@ Implemented routes to update course name/description.
 Updated implementation to get courses by assignment id:
 GET "/assignments/:id/courses" now only returns the courses for which the user has the course rights "Teacher" or "CourseAdmin".
 
+### Commit 31 - C31
+
+Implemented route to delete course assignment relation.
+
 ## Known Issues
 
 A set of all known issues in this project.
