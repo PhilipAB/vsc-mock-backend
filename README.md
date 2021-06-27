@@ -376,6 +376,10 @@ GET "/assignments/:id/courses" now only returns the courses for which the user h
 
 Implemented route to delete course assignment relation.
 
+### Commit 32 - C32
+
+Duplicate entries on name update now return status code 409 in reponse.
+
 ## Known Issues
 
 A set of all known issues in this project.

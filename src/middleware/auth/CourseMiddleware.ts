@@ -9,9 +9,10 @@ import { BasicCourseUserRelation } from 'src/models/courseUserRelation/BasicCour
 class CourseMiddleware {
     async valideCourseAdmin(req: Request, res: Response, next: NextFunction) {
         try {
+            const cId: string = req.params.cId ?? req.params.id;
             // User id is obtained from auth token -> therefore secure to get role from user id
             const courseUserRelation: BasicCourseUserRelation = {
-                courseId: Number(req.params.cId),
+                courseId: Number(cId),
                 userId: req.body.userId
             }
             const [courseRole, _courseFields] = await courseUserRelationService.getCourseRoleById(courseUserRelation);

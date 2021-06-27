@@ -157,7 +157,7 @@ class CourseController {
 
     async updateName(req: Request, res: Response) {
         const simpleCourse: SimpleCourse = {
-            constructor: {name: "RowDataPacket"},
+            constructor: { name: "RowDataPacket" },
             id: Number(req.params.id),
             name: req.body.name
         }
@@ -165,13 +165,17 @@ class CourseController {
             await courseService.updateName(simpleCourse);
             res.sendStatus(200);
         } catch (error) {
-            res.status(500).json({ error: error }).send();
+            if (error.code === 'ER_DUP_ENTRY') {
+                res.status(409).json({ error: error }).send();
+            } else {
+                res.status(500).json({ error: error }).send();
+            }
         }
     }
 
     async updateDescription(req: Request, res: Response) {
         const courseDescription: CourseDescription = {
-            constructor: {name: "RowDataPacket"},
+            constructor: { name: "RowDataPacket" },
             id: Number(req.params.id),
             description: req.body.description
         }
