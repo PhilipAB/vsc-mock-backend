@@ -390,6 +390,10 @@ Added columns "visible_from" (DATETIME) and "visible_till" (DATETIME) to CourseA
 
 Implemented functionality to filter courses by name with query parameter if they are retrieved by assignment id.
 
+### Commit 35 - C35
+
+Fixed error in course role validation middleware. Request parameter course id can now either be cId or id (depending on the route).
+
 ## Known Issues
 
 A set of all known issues in this project.
