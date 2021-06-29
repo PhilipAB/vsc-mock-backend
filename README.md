@@ -163,6 +163,8 @@ Finally we will insert a simple course assignment table to map courses to assign
 CREATE TABLE CourseAssignmentRelation (
     a_id INT,
     c_id INT,
+    visible_from DATETIME,
+    visible_to DATETIME,
     PRIMARY KEY (a_id, c_id),
     FOREIGN KEY (a_id) REFERENCES Assignment(id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
@@ -379,6 +381,10 @@ Implemented route to delete course assignment relation.
 ### Commit 32 - C32
 
 Duplicate entries on name update now return status code 409 in reponse.
+
+### Commit 33 - C33
+
+Added columns "visible_from" (DATETIME) and "visible_till" (DATETIME) to CourseAssignmentRelation table.
 
 ## Known Issues
 
