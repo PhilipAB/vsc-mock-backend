@@ -5,7 +5,7 @@ import { isAssignmentArray } from '../predicates/database/isAssignmentArray';
 import assignmentService from '../services/AssignmentService';
 import courseAssignmentRelationService from '../services/CourseAssignmentRelationService';
 import { BasicAssignment } from '../models/assignment/BasicAssignment';
-import { CourseAssignmentRelation } from '../models/courseAssignmentRelation/CourseAssignmentRelation';
+import { CourseAssignmentRelExtended } from '../models/courseAssignmentRelation/CourseAssignmentRelExtended';
 class AssignmentController {
 
     // ToDo: Add assignments to course (insert courseassignmentrelation)
@@ -20,9 +20,11 @@ class AssignmentController {
             const [result, _fields] = await assignmentService.create(assignment);
             if (isResultSetHeader(result)) {
                 if (req.body.courseId) {
-                    const courseAssignmentRelation: CourseAssignmentRelation = {
+                    const courseAssignmentRelation: CourseAssignmentRelExtended = {
                         assignmentId: result.insertId,
                         courseId: req.body.courseId,
+                        visibleFrom: req.body.visibleFrom ? new Date(req.body.visibleFrom) : null,
+                        visibleTill: req.body.visibleTill ? new Date(req.body.visibleTill) : null
                     }
                     await courseAssignmentRelationService.create(courseAssignmentRelation);
                 }
@@ -40,10 +42,27 @@ class AssignmentController {
         }
     }
 
-    async addExistingAssignmentToCourse(req: Request, res: Response) {
-        const courseAssignmentRelation: CourseAssignmentRelation = {
+    async updateCourseAssignmentRelation(req: Request, res: Response) {
+        const courseAssignmentRelation: CourseAssignmentRelExtended = {
             assignmentId: Number(req.params.aId),
             courseId: Number(req.params.cId),
+            visibleFrom: req.body.visibleFrom ? new Date(req.body.visibleFrom) : null,
+            visibleTill: req.body.visibleTill ? new Date(req.body.visibleTill) : null
+        }
+        try {
+            await courseAssignmentRelationService.update(courseAssignmentRelation);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async addExistingAssignmentToCourse(req: Request, res: Response) {
+        const courseAssignmentRelation: CourseAssignmentRelExtended = {
+            assignmentId: Number(req.params.aId),
+            courseId: Number(req.params.cId),
+            visibleFrom: req.body.visibleFrom ? new Date(req.body.visibleFrom) : null,
+            visibleTill: req.body.visibleTill ? new Date(req.body.visibleTill) : null
         }
         try {
             const [existingAssignment, _fields] = await assignmentService.findById(courseAssignmentRelation.assignmentId);

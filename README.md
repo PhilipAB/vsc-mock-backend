@@ -394,6 +394,10 @@ Implemented functionality to filter courses by name with query parameter if they
 
 Fixed error in course role validation middleware. Request parameter course id can now either be cId or id (depending on the route).
 
+### Commit 36 - C36
+
+Added implementation for visible_from and visible_till column. 
+
 ## Known Issues
 
 A set of all known issues in this project.
