@@ -396,7 +396,11 @@ Fixed error in course role validation middleware. Request parameter course id ca
 
 ### Commit 36 - C36
 
-Added implementation for visible_from and visible_till column. 
+Added implementation for visible_from and visible_till column.
+
+### Commit 37 - C37
+
+Implemented route to update entries in CourseAssignmentRelation table.
 
 ## Known Issues
 

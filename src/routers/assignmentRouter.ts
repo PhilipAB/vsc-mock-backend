@@ -27,10 +27,15 @@ assignmentRouter.post('/',
     assignmentMiddleware.valideAssignmentCreationRights,
     assignmentController.createAssignment);
 
-assignmentRouter.post('/assignment/:aId/course/cId',
+assignmentRouter.post('/assignment/:aId/course/:cId',
+    userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
     assignmentController.addExistingAssignmentToCourse)
 
+assignmentRouter.put('/assignment/:aId/course/:cId',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    assignmentController.updateCourseAssignmentRelation)
 
 assignmentRouter.get('/',
     userMiddleware.authenticateUser,
