@@ -19,6 +19,7 @@ import { isSimpleCourseArray } from '../predicates/database/isSimpleCourse';
 import { SimpleCourse } from '../models/course/SimpleCourse';
 import { CourseDescription } from '../models/course/CourseDescription';
 import { CourseAssignmentRelation } from '../models/courseAssignmentRelation/CourseAssignmentRelation';
+import { OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2/typings/mysql';
 
 class CourseController {
 
@@ -88,9 +89,16 @@ class CourseController {
         try {
             const assignmentId: number = Number(req.params.id);
             const userId: number = req.body.userId;
-            const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentById(assignmentId, userId);
-            if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isSimpleCourseArray(assignmentRows)) {
-                res.status(200).send(assignmentRows);
+            let rows: RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader;
+            if (req.query.name && typeof req.query.name === "string") {
+                const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentByIdWithSearch(assignmentId, userId, req.query.name);
+                rows = assignmentRows;
+            } else {
+                const [assignmentRows, _fields] = await courseAssignmentRelationService.getAllCoursesForAssignmentById(assignmentId, userId);
+                rows = assignmentRows;
+            }
+            if (Array.isArray(rows) && rows.length === 0 || isSimpleCourseArray(rows)) {
+                res.status(200).send(rows);
             }
             else {
                 res.status(500).json({ error: "Course data could not be processed!" }).send();
@@ -103,9 +111,16 @@ class CourseController {
     async getCoursesNotInCourseAssignmentRelation(req: Request, res: Response) {
         try {
             const assignmentId: number = Number(req.params.id);
-            const [assignmentRows, _fields] = await courseAssignmentRelationService.getCoursesNotInCourseAssignmentRelationById(req.body.userId, assignmentId);
-            if (Array.isArray(assignmentRows) && assignmentRows.length === 0 || isSimpleCourseArray(assignmentRows)) {
-                res.status(200).send(assignmentRows);
+            let rows: RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader;
+            if (req.query.name && typeof req.query.name === "string") {
+                const [assignmentRows, _fields] = await courseAssignmentRelationService.getCoursesNotInCourseAssignmentRelationByIdWithSearch(req.body.userId, assignmentId, req.query.name);
+                rows = assignmentRows;
+            } else {
+                const [assignmentRows, _fields] = await courseAssignmentRelationService.getCoursesNotInCourseAssignmentRelationById(req.body.userId, assignmentId);
+                rows = assignmentRows;
+            }
+            if (Array.isArray(rows) && rows.length === 0 || isSimpleCourseArray(rows)) {
+                res.status(200).send(rows);
             }
             else {
                 res.status(500).json({ error: "Course data could not be processed!" }).send();

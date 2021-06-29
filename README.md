@@ -386,6 +386,10 @@ Duplicate entries on name update now return status code 409 in reponse.
 
 Added columns "visible_from" (DATETIME) and "visible_till" (DATETIME) to CourseAssignmentRelation table.
 
+### Commit 34 - C34
+
+Implemented functionality to filter courses by name with query parameter if they are retrieved by assignment id.
+
 ## Known Issues
 
 A set of all known issues in this project.
