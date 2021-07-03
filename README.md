@@ -418,6 +418,10 @@ Removed empty line in CourseController.
 
 Added model for assignments with visible_from and visible_till dates. 
 
+### Commit 42 - C42
+
+Implemented type guard for assignments with visible_from and visible_till dates.
+
 ## Known Issues
 
 A set of all known issues in this project.
