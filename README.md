@@ -426,6 +426,10 @@ Implemented type guard for assignments with visible_from and visible_till dates.
 
 Implemented functionality to get visible assignments.
 
+### Commit 44 - C44
+
+Implemented route to get visible assignments.
+
 ## Known Issues
 
 A set of all known issues in this project.

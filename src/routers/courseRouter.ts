@@ -53,6 +53,11 @@ courseRouter.get('/course/:id/assignments',
     courseMiddleware.valideCourseTeacher,
     assignmentController.getAssignmentsByCourseId);
 
+courseRouter.get('/course/:id/assignments/visible',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseUser,
+    assignmentController.getVisibleAssignmentsByCourseId);
+
 courseRouter.get('/course/:id/assignments/no-relation',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
