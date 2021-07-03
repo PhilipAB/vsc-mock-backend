@@ -23,7 +23,7 @@ class CourseUserRelationService {
         return this.promisePool.query(
             "UPDATE `CourseAssignmentRelation`\
             SET `visible_from` = ?, `visible_till` = ?\
-            WHERE `a_id` = ? AND `c_id` = ?", [courseAssignmentRelation.visibleFrom, courseAssignmentRelation.visibleTill, courseAssignmentRelation.assignmentId, courseAssignmentRelation.courseId]);
+            WHERE `a_id` = ? AND `c_id` = ?", [courseAssignmentRelation.visibleFrom?.toISOString().slice(0, 19).replace('T', ' '), courseAssignmentRelation.visibleTill?.toISOString().slice(0, 19).replace('T', ' '), courseAssignmentRelation.assignmentId, courseAssignmentRelation.courseId]);
     }
 
     getAllCoursesForAssignmentById(assignmentId: number, userId: number) {
@@ -42,7 +42,7 @@ class CourseUserRelationService {
 
     getAllAssignmentsForCourseById(courseId: number) {
         return this.promisePool.query(
-            "SELECT `id`, `name`, `repository`, `description` FROM `CourseAssignmentRelation` AS `car`\
+            "SELECT `id`, `name`, `repository`, `description`, `visible_from`, `visible_till`  FROM `CourseAssignmentRelation` AS `car`\
             JOIN (SELECT `id`, `name`, `repository`, `description` FROM `Assignment`) AS `a` on car.a_id = a.id\
             WHERE car.c_id = ?", [courseId]);
     }

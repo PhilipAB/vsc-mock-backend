@@ -406,6 +406,10 @@ Implemented route to update entries in CourseAssignmentRelation table.
 
 Added course user validation.
 
+### Commit 39 - C39
+
+Changed visibility dates on updating assignments to UTC time.
+
 ## Known Issues
 
 A set of all known issues in this project.
