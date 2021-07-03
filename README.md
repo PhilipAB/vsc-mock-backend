@@ -443,6 +443,10 @@ Therefore, removed toISOString on visible_from/visible_till date for course assi
 
 Renamed by mistake named class CourseUserRelation (in CourseAssignmentRelation.tsx) to CourseAssignmentRelation. 
 
+### Commit 48 - C48
+
+Licensed project under Apache-2.0. 
+
 ## Known Issues
 
 A set of all known issues in this project.
