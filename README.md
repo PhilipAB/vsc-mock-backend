@@ -414,6 +414,10 @@ Changed visibility dates on updating assignments to UTC time.
 
 Removed empty line in CourseController.
 
+### Commit 41 - C41
+
+Added model for assignments with visible_from and visible_till dates. 
+
 ## Known Issues
 
 A set of all known issues in this project.
