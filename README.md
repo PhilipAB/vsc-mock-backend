@@ -430,6 +430,10 @@ Implemented functionality to get visible assignments.
 
 Implemented route to get visible assignments.
 
+### Commit 45 - C45
+
+Removed console.log.
+
 ## Known Issues
 
 A set of all known issues in this project.

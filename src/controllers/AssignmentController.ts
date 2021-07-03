@@ -115,7 +115,6 @@ class AssignmentController {
             } else if (isAssignmentArrayWithVisibility(assignmentRows)) {
                 let isVisible = false;
                 const currentUtc: number = new Date().getTime();
-                console.log(assignmentRows);
                 res.status(200).send(
                     assignmentRows.filter(assignment => {
                         const partsValidFrom: number[] | undefined = assignment.visible_from?.split(/[- :]/).map(dateTimePart => Number(dateTimePart));
