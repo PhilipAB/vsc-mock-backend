@@ -422,6 +422,10 @@ Added model for assignments with visible_from and visible_till dates.
 
 Implemented type guard for assignments with visible_from and visible_till dates.
 
+### Commit 43 - C43
+
+Implemented functionality to get visible assignments.
+
 ## Known Issues
 
 A set of all known issues in this project.
