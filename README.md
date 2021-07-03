@@ -402,6 +402,10 @@ Added implementation for visible_from and visible_till column.
 
 Implemented route to update entries in CourseAssignmentRelation table.
 
+### Commit 38 - C38
+
+Added course user validation.
+
 ## Known Issues
 
 A set of all known issues in this project.

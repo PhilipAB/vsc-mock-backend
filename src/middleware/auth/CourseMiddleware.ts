@@ -63,6 +63,20 @@ class CourseMiddleware {
             res.status(500).json({ error: error }).send();
         }
     }
+
+    async valideCourseUser(req: Request, res: Response, next: NextFunction) {
+        const courseUserRelation: BasicCourseUserRelation = {
+            userId: req.body.userId,
+            courseId: Number(req.params.id)
+        }
+        try {
+            const [_existingCourse, _fields] = await courseUserRelationService.getCourseUserRelationById(courseUserRelation);
+            // "existingCourse" is an empty array, if no such courseUserRelation exists in database.
+            next();
+        } catch (error) {
+            res.status(404).json({ error: error }).send();
+        }
+    }
 }
 
 export default new CourseMiddleware();
