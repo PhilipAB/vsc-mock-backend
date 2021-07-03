@@ -13,8 +13,8 @@ class CourseUserRelationService {
             [
                 courseAssignmentRelation.assignmentId,
                 courseAssignmentRelation.courseId,
-                courseAssignmentRelation.visibleFrom?.toISOString().slice(0, 19).replace('T', ' '),
-                courseAssignmentRelation.visibleTill?.toISOString().slice(0, 19).replace('T', ' ')
+                courseAssignmentRelation.visibleFrom,
+                courseAssignmentRelation.visibleTill
             ]
         );
     }
@@ -23,7 +23,7 @@ class CourseUserRelationService {
         return this.promisePool.query(
             "UPDATE `CourseAssignmentRelation`\
             SET `visible_from` = ?, `visible_till` = ?\
-            WHERE `a_id` = ? AND `c_id` = ?", [courseAssignmentRelation.visibleFrom?.toISOString().slice(0, 19).replace('T', ' '), courseAssignmentRelation.visibleTill?.toISOString().slice(0, 19).replace('T', ' '), courseAssignmentRelation.assignmentId, courseAssignmentRelation.courseId]);
+            WHERE `a_id` = ? AND `c_id` = ?", [courseAssignmentRelation.visibleFrom, courseAssignmentRelation.visibleTill, courseAssignmentRelation.assignmentId, courseAssignmentRelation.courseId]);
     }
 
     getAllCoursesForAssignmentById(assignmentId: number, userId: number) {

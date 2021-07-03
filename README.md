@@ -434,6 +434,11 @@ Implemented route to get visible assignments.
 
 Removed console.log.
 
+### Commit 46 - C46
+
+Dates are already displayed in UTC format. 
+Therefore, removed toISOString on visible_from/visible_till date for course assignment relation creation or update.  
+
 ## Known Issues
 
 A set of all known issues in this project.
