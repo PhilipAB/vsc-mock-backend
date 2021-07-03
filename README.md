@@ -410,6 +410,10 @@ Added course user validation.
 
 Changed visibility dates on updating assignments to UTC time.
 
+### Commit 40 - C40
+
+Removed empty line in CourseController.
+
 ## Known Issues
 
 A set of all known issues in this project.

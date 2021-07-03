@@ -167,7 +167,6 @@ class CourseController {
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }
-
     }
 
     async updateName(req: Request, res: Response) {
