@@ -437,7 +437,11 @@ Removed console.log.
 ### Commit 46 - C46
 
 Dates are already displayed in UTC format. 
-Therefore, removed toISOString on visible_from/visible_till date for course assignment relation creation or update.  
+Therefore, removed toISOString on visible_from/visible_till date for course assignment relation creation or update. 
+
+### Commit 47 - C47
+
+Renamed by mistake named class CourseUserRelation (in CourseAssignmentRelation.tsx) to CourseAssignmentRelation. 
 
 ## Known Issues
 

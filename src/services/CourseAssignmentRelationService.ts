@@ -3,7 +3,7 @@ import { CourseAssignmentRelation } from "../models/courseAssignmentRelation/Cou
 import { connectionPool } from "../connection/connectionPool";
 import { CourseAssignmentRelExtended } from "../models/courseAssignmentRelation/CourseAssignmentRelExtended";
 
-class CourseUserRelationService {
+class CourseAssignmentRelationService {
 
     promisePool: Pool = connectionPool.promise();
 
@@ -76,4 +76,4 @@ class CourseUserRelationService {
     }
 }
 
-export default new CourseUserRelationService();
+export default new CourseAssignmentRelationService();
