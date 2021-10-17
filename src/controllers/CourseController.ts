@@ -276,8 +276,8 @@ class CourseController {
 
     async addCourseAccess(req: Request, res: Response) {
         try {
-            await courseAccessService.create(Number(req.params.id));
-            res.status(201);
+            await courseAccessService.create(Number(req.body.id));
+            res.status(201).send();
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }
