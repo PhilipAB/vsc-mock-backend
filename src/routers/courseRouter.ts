@@ -99,6 +99,13 @@ courseRouter.delete('/course/:cId/assignment/:aId',
     courseMiddleware.valideCourseTeacher,
     courseController.deleteCourseAssignmentRelation);
 
+courseRouter.post('/accessed',
+    body('id').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
+    courseController.addCourseAccess)
+
 courseRouter.get('/accessed/:id',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
