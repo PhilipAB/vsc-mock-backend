@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { isResultSetHeader } from '../predicates/database/isResultSetHeader';
 import { isCourseArray } from '../predicates/database/isCourseArray';
 import courseService from '../services/CourseService';
+import courseAccessService from '../services/CourseAccessService';
 import courseUserRelationService from '../services/CourseUserRelationService';
 import { BasicCoursePwd } from '../models/course/BasicCoursePwd';
 import { CourseUserRelationRole } from '../models/courseUserRelation/CourseUserRelationRole';
@@ -268,6 +269,33 @@ class CourseController {
         try {
             await courseAssignmentRelationService.delete(courseAssignmentRelation);
             res.sendStatus(200);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async addCourseAccess(req: Request, res: Response) {
+        try {
+            await courseAccessService.create(Number(req.params.id));
+            res.status(201);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getTotalCourseAccess(req: Request, res: Response) {
+        try {
+            const [result, _fields] = await courseAccessService.getTotalCourseAccess(Number(req.params.id));
+            res.status(200).send(result);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getCourseAccessByUser(req: Request, res: Response) {
+        try {
+            const [result, _fields] = await courseAccessService.getCourseAccessByUsers(Number(req.params.id));
+            res.status(200).send(result);
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }

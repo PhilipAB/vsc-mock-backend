@@ -48,3 +48,21 @@ assignmentRouter.get('/assignment/:id/courses',
 assignmentRouter.get('/assignment/:id/courses/no-relation',
     userMiddleware.authenticateUser,
     courseController.getCoursesNotInCourseAssignmentRelation);
+
+assignmentRouter.post('/assignment/:id/user',
+    body('solved').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    body('total').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
+    assignmentController.submitAssignment)
+
+assignmentRouter.post('/assignment/:id/user/update',
+    body('solved').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    body('total').notEmpty().isNumeric({ no_symbols: true })
+        .escape().trim(),
+    validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
+    assignmentController.updateAssignmentSubmission)

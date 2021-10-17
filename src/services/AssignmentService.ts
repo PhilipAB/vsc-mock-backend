@@ -2,7 +2,7 @@ import { Pool } from 'mysql2/promise';
 import { BasicAssignment } from '../models/assignment/BasicAssignment';
 import { connectionPool } from '../connection/connectionPool';
 
-class CourseService {
+class AssignmentService {
 
     promisePool: Pool = connectionPool.promise();
 
@@ -21,4 +21,4 @@ class CourseService {
     }
 }
 
-export default new CourseService();
+export default new AssignmentService();

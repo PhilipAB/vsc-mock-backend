@@ -98,3 +98,13 @@ courseRouter.delete('/course/:cId/assignment/:aId',
     userMiddleware.authenticateUser,
     courseMiddleware.valideCourseTeacher,
     courseController.deleteCourseAssignmentRelation);
+
+courseRouter.put('/accessed/:id',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    courseController.getCourseAccessByUser);
+
+courseRouter.put('/accessed/total/:id',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    courseController.getTotalCourseAccess);

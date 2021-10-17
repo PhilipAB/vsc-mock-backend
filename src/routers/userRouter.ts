@@ -3,6 +3,8 @@ import { body } from "express-validator";
 import userController from "../controllers/UserController";
 import validationErrorHandler from "../middleware/errors/ValidationErrorHandler";
 import userMiddleware from "../middleware/auth/UserMiddleware";
+import courseMiddleware from "../middleware/auth/CourseMiddleware";
+import assignmentController from "../controllers/AssignmentController";
 
 export const userRouter: Router = express.Router();
 
@@ -20,4 +22,9 @@ userRouter.get('/profile',
     userController.getUserById);
 
 userRouter.get('/', userController.getAllUsers);
+
+userRouter.get('/assignment/:id',
+    userMiddleware.authenticateUser,
+    courseMiddleware.valideCourseTeacher,
+    assignmentController.getUsersByAssignmentId);
 

@@ -4,8 +4,10 @@ import { isResultSetHeader } from '../predicates/database/isResultSetHeader';
 import { isAssignmentArray, isAssignmentArrayWithVisibility } from '../predicates/database/isAssignmentArray';
 import assignmentService from '../services/AssignmentService';
 import courseAssignmentRelationService from '../services/CourseAssignmentRelationService';
+import assignmentUserRelationService from '../services/AssignmentUserRelationService';
 import { BasicAssignment } from '../models/assignment/BasicAssignment';
 import { CourseAssignmentRelExtended } from '../models/courseAssignmentRelation/CourseAssignmentRelExtended';
+import { AssignmentUserRelation } from 'src/models/assignmentUserRelation/assignmentUserRelation';
 class AssignmentController {
     async createAssignment(req: Request, res: Response) {
         const assignment: BasicAssignment = {
@@ -150,6 +152,46 @@ class AssignmentController {
             else {
                 res.status(500).json({ error: "Course data could not be processed!" }).send();
             }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async submitAssignment(req: Request, res: Response) {
+        const assignmentUserRelation: AssignmentUserRelation = {
+            userId: req.body,
+            assignmentId: Number(req.params.id),
+            solvedTests: req.body.solved,
+            totalTests: req.body.total
+        }
+        try {
+            await assignmentUserRelationService.create(assignmentUserRelation);
+            res.status(201).send(assignmentUserRelation);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async updateAssignmentSubmission(req: Request, res: Response) {
+        const assignmentUserRelation: AssignmentUserRelation = {
+            userId: req.body,
+            assignmentId: Number(req.params.id),
+            solvedTests: req.body.solved,
+            totalTests: req.body.total
+        }
+        try {
+            await assignmentUserRelationService.update(assignmentUserRelation);
+            res.status(201).send(assignmentUserRelation);
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async getUsersByAssignmentId(req: Request, res: Response) {
+        try {
+            const assignmentId: number = Number(req.params.id);
+            const [userRows, _fields] = await assignmentUserRelationService.getAllUsersForAssignmentById(assignmentId);
+            res.status(200).send(userRows);
         } catch (error) {
             res.status(500).json({ error: error }).send();
         }

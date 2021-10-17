@@ -105,7 +105,7 @@ Exit MySQL and connect with your newly created user to your new database:\
 `Enter password:` *`your vsc_user password`*
 `USE vsc_mock_backend_db`
 
-To begin with, we will create 5 Tables in our database. 
+To begin with, we will create 7 Tables in our database. 
 
 The first one will be our user table: 
 ```
@@ -125,7 +125,8 @@ CREATE TABLE Course (
     name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     creator_id INT NOT NULL,
-    description TEXT, 
+    description TEXT,
+    subject ENUM('WI', 'TI', 'AI'), 
     PRIMARY KEY (id),
     FOREIGN KEY (creator_id) REFERENCES User(id)
 );
@@ -158,7 +159,7 @@ CREATE TABLE Assignment (
 ```
 The repository column represents a git repository link where we clone our assignment from.
 
-Finally we will insert a simple course assignment table to map courses to assignments or vice versa:
+Now we will insert a simple course assignment table to map courses to assignments or vice versa:
 ```
 CREATE TABLE CourseAssignmentRelation (
     a_id INT,
@@ -167,6 +168,30 @@ CREATE TABLE CourseAssignmentRelation (
     visible_to DATETIME,
     PRIMARY KEY (a_id, c_id),
     FOREIGN KEY (a_id) REFERENCES Assignment(id),
+    FOREIGN KEY (c_id) REFERENCES Course(id) 
+);
+``` 
+
+Then we will insert the assignment user relation table to resolve the many-to-many relationship if a user submits the assignment's solution:
+```
+CREATE TABLE AssignmentUserRelation (
+    u_id INT,
+    a_id INT,
+    solved_tests INT,
+    total_tests INT,
+    PRIMARY KEY (u_id, a_id),
+    FOREIGN KEY (u_id) REFERENCES User(id),
+    FOREIGN KEY (a_id) REFERENCES Assignment(id) 
+);
+```
+
+Finally, we will set up a table to track course access:
+```
+CREATE TABLE CourseAccess(
+    ca_id INT AUTO_INCREMENT,
+    c_id INT,
+    accessed DATETIME,
+    PRIMARY KEY (ca_id),
     FOREIGN KEY (c_id) REFERENCES Course(id) 
 );
 ``` 
