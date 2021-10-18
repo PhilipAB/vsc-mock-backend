@@ -27,7 +27,7 @@ class AssignmentController {
                     }
                     await courseAssignmentRelationService.create(courseAssignmentRelation);
                 }
-                res.status(201).json({ courseId: result.insertId, courseName: assignment.name }).send();
+                res.status(201).json({ assignmentId: result.insertId, assignmentName: assignment.name }).send();
             }
             else {
                 res.status(500).json({ error: "Course user relation data could not be processed!" }).send();
@@ -119,13 +119,13 @@ class AssignmentController {
                 const currentUtc: number = new Date().getTime();
                 res.status(200).send(
                     assignmentRows.filter(assignment => {
-                        const partsValidFrom: number[] | undefined = assignment.visible_from?.split(/[- :]/).map(dateTimePart => Number(dateTimePart));
+                        const partsValidFrom: number[] | undefined = JSON.stringify(assignment.visible_from, (_key, value) => value ?? undefined)?.split(/[-T: ]/).map(dateTimePart => Number(dateTimePart));
                         if (partsValidFrom) {
                             isVisible = currentUtc > Date.UTC(partsValidFrom[0], partsValidFrom[1] - 1, partsValidFrom[2], partsValidFrom[3], partsValidFrom[4], partsValidFrom[5]);
                         } else {
                             isVisible = true;
                         }
-                        const partsValidTill: number[] | undefined = assignment.visible_till?.split(/[- :]/).map(dateTimePart => Number(dateTimePart));
+                        const partsValidTill: number[] | undefined = JSON.stringify(assignment.visible_from, (_key, value) => value ?? undefined)?.split(/[-T: ]/).map(dateTimePart => Number(dateTimePart));
                         if (partsValidTill) {
                             return isVisible && currentUtc < Date.UTC(partsValidTill[0], partsValidTill[1] - 1, partsValidTill[2], partsValidTill[3], partsValidTill[4], partsValidTill[5]);
                         } else {
