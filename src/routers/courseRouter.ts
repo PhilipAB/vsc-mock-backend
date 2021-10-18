@@ -79,10 +79,14 @@ courseRouter.put('/description/:id',
 
 courseRouter.put('/hidden/:id',
     userMiddleware.authenticateUser,
+    body('hidden').isBoolean(),
+    validationErrorHandler.handleGeneralValidationError,
     courseController.updateHiddenProperty);
 
 courseRouter.put('/starred/:id',
     userMiddleware.authenticateUser,
+    body('starred').isBoolean(),
+    validationErrorHandler.handleGeneralValidationError,
     courseController.updateStarProperty);
 
 courseRouter.put('/visited/:id',
