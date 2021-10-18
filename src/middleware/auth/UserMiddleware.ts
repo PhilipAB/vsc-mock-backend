@@ -1,6 +1,6 @@
 import { Request, NextFunction } from 'express';
 import { Response } from 'express-serve-static-core';
-import { UserRoleType } from '../../types/roles/UserRoleType';
+import { UserRoleType, UserRoleTypeExtended } from '../../types/roles/UserRoleType';
 import { isNonEmptyRowDataPacketArray } from '../../predicates/database/isNonEmptyRowDataPacketArray';
 import userService from '../../services/UserService';
 import jwt, { VerifyErrors } from "jsonwebtoken";
@@ -42,6 +42,29 @@ class UserMiddleware {
                     res.status(403).json({ error: "Access denied: Unauthorized attempt to create a course or assignment!" }).send();
                 }
                 else if (userRows[0].role === UserRoleType.Lecturer) {
+                    next();
+                }
+                else {
+                    res.status(500).json({ error: "Invalid user role!" }).send();
+                }
+            }
+            else {
+                res.status(500).json({ error: "Could not process property role!" }).send();
+            }
+        } catch (error) {
+            res.status(500).json({ error: error }).send();
+        }
+    }
+
+    async valideAdminRights(req: Request, res: Response, next: NextFunction) {
+        try {
+            // User id is obtained from auth token -> therefore secure to get role from user id
+            const [userRows, _userFields] = await userService.getUserRoleById(req.body.userId);
+            if (isNonEmptyRowDataPacketArray(userRows) && userRows[0].role) {
+                if (userRows[0].role === UserRoleTypeExtended.Student || userRows[0].role === UserRoleTypeExtended.Lecturer) {
+                    res.status(403).json({ error: "Access denied: Unauthorized attempt to create a course or assignment!" }).send();
+                }
+                else if (userRows[0].role === UserRoleTypeExtended.Admin) {
                     next();
                 }
                 else {
