@@ -12,6 +12,7 @@ export const assignmentRouter: Router = express.Router();
 assignmentRouter.use(express.json());
 
 assignmentRouter.post('/',
+    userMiddleware.authenticateUser,
     body('name').notEmpty().isString()
         .escape().trim(),
     body('repository').notEmpty().isString()
@@ -23,7 +24,6 @@ assignmentRouter.post('/',
     body('courseId').optional().isNumeric({ no_symbols: true })
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     assignmentMiddleware.valideAssignmentCreationRights,
     assignmentController.createAssignment);
 
@@ -50,19 +50,19 @@ assignmentRouter.get('/assignment/:id/courses/no-relation',
     courseController.getCoursesNotInCourseAssignmentRelation);
 
 assignmentRouter.post('/assignment/:id/user',
+    userMiddleware.authenticateUser,
     body('solved').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     body('total').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     assignmentController.submitAssignment)
 
 assignmentRouter.post('/assignment/:id/user/update',
+    userMiddleware.authenticateUser,
     body('solved').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     body('total').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     assignmentController.updateAssignmentSubmission)

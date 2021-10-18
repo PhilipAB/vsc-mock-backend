@@ -12,6 +12,8 @@ export const courseRouter: Router = express.Router();
 courseRouter.use(express.json());
 
 courseRouter.post('/',
+    userMiddleware.authenticateUser,
+    userMiddleware.valideCreationUserRights,
     body('name').notEmpty().isString()
         .escape().trim(),
     body('password').isString().
@@ -22,17 +24,15 @@ courseRouter.post('/',
     body('description').isString()
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
-    userMiddleware.valideCreationUserRights,
     courseController.createCourse);
 
 courseRouter.post('/signUp',
+    userMiddleware.authenticateUser,
     body('id').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     body('password').isString()
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     courseController.signUpForCourse)
 
 courseRouter.get('/',
@@ -100,10 +100,10 @@ courseRouter.delete('/course/:cId/assignment/:aId',
     courseController.deleteCourseAssignmentRelation);
 
 courseRouter.post('/accessed',
+    userMiddleware.authenticateUser,
     body('id').notEmpty().isNumeric({ no_symbols: true })
         .escape().trim(),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     courseController.addCourseAccess)
 
 courseRouter.get('/accessed/:id',

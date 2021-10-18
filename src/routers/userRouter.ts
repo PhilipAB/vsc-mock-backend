@@ -3,7 +3,6 @@ import { body } from "express-validator";
 import userController from "../controllers/UserController";
 import validationErrorHandler from "../middleware/errors/ValidationErrorHandler";
 import userMiddleware from "../middleware/auth/UserMiddleware";
-import courseMiddleware from "../middleware/auth/CourseMiddleware";
 import assignmentController from "../controllers/AssignmentController";
 
 export const userRouter: Router = express.Router();
@@ -11,11 +10,12 @@ export const userRouter: Router = express.Router();
 userRouter.use(express.json());
 
 userRouter.post('/',
+    userMiddleware.authenticateUser,
+    userMiddleware.valideAdminRights,
     body('name').notEmpty().isString()
         .escape().trim(),
     body('role').isIn(['Student', 'Lecturer']),
     validationErrorHandler.handleGeneralValidationError,
-    userMiddleware.authenticateUser,
     userController.createUser);
 
 userRouter.get('/profile',
@@ -26,6 +26,6 @@ userRouter.get('/', userController.getAllUsers);
 
 userRouter.get('/assignment/:id',
     userMiddleware.authenticateUser,
-    courseMiddleware.valideCourseTeacher,
+    userMiddleware.valideCreationUserRights,
     assignmentController.getUsersByAssignmentId);
 
