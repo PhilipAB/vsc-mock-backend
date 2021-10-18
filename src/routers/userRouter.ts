@@ -15,6 +15,7 @@ userRouter.post('/',
         .escape().trim(),
     body('role').isIn(['Student', 'Lecturer']),
     validationErrorHandler.handleGeneralValidationError,
+    userMiddleware.authenticateUser,
     userController.createUser);
 
 userRouter.get('/profile',
