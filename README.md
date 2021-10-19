@@ -239,6 +239,9 @@ You can delete it again by running the following query: `DELETE FROM user WHERE 
 
 Now we are finished with the basic setup for our mock backend. Stay tuned for future commits to improve our file structure, extend the domain model as well as the API and more. 
 
+### Testing
+To use the following postman script ([Lecturer_AuthPostman_collection.json](postman/Lecturer_Auth.Postman_collection.json)) please be aware that you need to provide an access token in line 1594.
+
 ## Commit Log
 
 A set of all commits with a brief description in this project.
